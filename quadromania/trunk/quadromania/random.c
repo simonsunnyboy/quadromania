@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: random.c - implements a random number generator
- * last Modified: 26.01.2003 : 10:14
+ * last Modified: 10.11.2003 : 19:24
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,28 +23,26 @@
  *
  */
 
-
 #include <SDL/SDL.h>
 #include <time.h>
 #include "random.h"
 /* This is a simple custom pseudorandom number generator. It's not a very
-   good one, but it's sufficient for our purposes. Never trust the rand()
-   included with the C library. Its quality varies between implementations,
-   and it's easy to run into patterns within the generated numbers. At least
-   this one is consistent. */
+ good one, but it's sufficient for our purposes. Never trust the rand()
+ included with the C library. Its quality varies between implementations,
+ and it's easy to run into patterns within the generated numbers. At least
+ this one is consistent. */
 static Sint32 seed = 0;
 
 void initrandom()
 {
-    seed = time(NULL);
+	seed = time(NULL);
 }
 
-
-/* FIXME: convert to a decent random number generator - preferrably aftern an algorithm my D.E. Knuth */
-unsigned int getrandom()
+/* FIXME: convert to a decent random number generator - preferrably using an algorithm my D.E. Knuth */
+Uint32 getrandom()
 {
-    Sint32 p1 = 1103515245;
-    Sint32 p2 = 12345;
-    seed = (seed*p1+p2) % 2147483647;
-    return (unsigned)seed/3;
+	Sint32 p1 = 1103515245;
+	Sint32 p2 = 12345;
+	seed = (seed * p1 + p2) % 2147483647;
+	return (Uint32) seed / 3;
 }

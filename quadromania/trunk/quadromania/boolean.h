@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: boolean.h - symbolic constants for boolean values
- * last Modified: 20.12.2002 : 12:47
+ * last Modified: 10.11.2009 : 19:21
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,13 @@
  * THIS SOFTWARE IS SUPPLIED AS IT IS WITHOUT ANY WARRANTY!
  *
  */
+#ifndef __BOOLEAN_H
+	#define __BOOLEAN_H
 
-#include <SDL/SDL.h>
+	#include <SDL/SDL.h>
 
-#define FALSE 0
-#define TRUE 1
-#define BOOLEAN Uint8
+	#define FALSE 0
+	#define TRUE 1
+
+	typedef Uint8 BOOLEAN;
+#endif

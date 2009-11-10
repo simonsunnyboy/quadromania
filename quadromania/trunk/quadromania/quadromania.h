@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.h - header file for the game logic module
- * last Modified: 20.12.2002 : 13:24
+ * last Modified: 10.11.2009 : 19:23
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +23,18 @@
  *
  */
 
-#include "boolean.h"
+#ifdef __QUADROMANIA_H
+	#define __QUADROMANIA_H
+	#include "boolean.h"
 
-/**************
- * PROTOTYPES *
- **************/
+	/**************
+	 * PROTOTYPES *
+	 **************/
 
-void clearplayfield(void);
-void initplayfield(Uint16, Uint8);
-void rotate(Uint32, Uint32);
-void drawplayfield(SDL_Surface *);
-BOOLEAN won(void);
-Uint16 rotationsperlevel(Uint8);
+	void clearplayfield(void);
+	void initplayfield(Uint16, Uint8);
+	void rotate(Uint32, Uint32);
+	void drawplayfield(SDL_Surface *);
+	BOOLEAN won(void);
+	Uint16 rotationsperlevel(Uint8);
+#endif

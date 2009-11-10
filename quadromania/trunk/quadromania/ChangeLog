@@ -1,3 +1,10 @@
+10.11.2009:
+	- project resurrected for future port to GP2X Wiz
+	- cleanup source formatting
+	- cleanup datatypes in use (where applicable)
+	- typedefed BOOLEAN properly
+	- added INCLUDE sentries to all project header files
+
 26.01.2003:
 	- game at least playable (no counters, no timer)
 	- simple screen for winning the game

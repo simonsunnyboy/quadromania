@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: random.h - header files for the random number generator
- * last Modified: 20.12.2002 : 12:58
+ * last Modified: 10.11.2009 : 19:25
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,12 @@
  * THIS SOFTWARE IS SUPPLIED AS IT IS WITHOUT ANY WARRANTY!
  *
  */
+#ifndef __RANDOM_H
+	#define __RANDOM_H
+	/**************
+	 * PROTOTYPES *
+	 **************/
 
-/**************
- * PROTOTYPES *
- **************/
-
-void initrandom(void);
-unsigned int getrandom(void);
+	void initrandom(void);
+	Uint32 getrandom(void);
+#endif

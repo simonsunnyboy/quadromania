@@ -28,10 +28,8 @@ SDL_LIB=`sdl-config --libs`
 
 # the compiler to use - please use the GNU C Compiler if possible
 CC=gcc
-
-# default make rule for .c files - compile to .o
-.c.o: 
-	$(CC) $(CFLAGS) -c $<
+	
+all: quadromania
 
 quadromania: main.c graphics.o random.o SFont.o quadromania.o
 	$(CC) $(CFLAGS) main.c -o quadromania graphics.c random.o SFont.o quadromania.o $(SDL_LIB) -lSDL_image
@@ -43,6 +41,11 @@ random.o: random.c random.h
 quadromania.o: quadromania.c quadromania.h boolean.h
 
 SFont.o: SFont.c SFont.h
+
+
+# default make rule for .c files - compile to .o
+.c.o: 
+	$(CC) $(CFLAGS) -c $<
 
 # cleanup
 clean:
