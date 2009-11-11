@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.h - header file for the game logic module
- * last Modified: 10.11.2009 : 19:23
+ * last Modified: 11.11.2009 : 18:35
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  *
  */
 
-#ifdef __QUADROMANIA_H
+#ifndef __QUADROMANIA_H
 	#define __QUADROMANIA_H
 	#include "boolean.h"
 

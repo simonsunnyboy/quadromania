@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 10.11.2009 : 19:21
+ * last Modified: 11.11.2009 : 18:35
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
 	SDL_Event event; /* SDL event for keyboard, mouse and focus actions... */
 	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
 	struct MOUSE mouse;
+	mouse.x = 0;
+	mouse.y = 0;
+	mouse.button = 0;
 
 	status = UNINITIALIZED;
 	oldstatus = status;
