@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 10.11.2009 : 19:22
+ * last Modified: 11.11.2009 : 18:46
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@
 static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright;
 
 /* texture the complete screen with 1 out of 10 textures... */
-void drawbackground(SDL_Surface *screen, Uint8 texture)
+void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
 {
 	Uint8 i, j;
 	SDL_Rect src, dest;
@@ -56,7 +56,7 @@ void drawbackground(SDL_Surface *screen, Uint8 texture)
 }
 
 /* draw one of the coloured dots for the playfield... */
-void drawdot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
+void Graphics_DrawDot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
 {
 	SDL_Rect src, dest;
 
@@ -72,7 +72,7 @@ void drawdot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
 }
 
 /* draw the titel string */
-void drawtitel(SDL_Surface *screen)
+void Graphics_DrawTitle(SDL_Surface *screen)
 {
 	SDL_Rect src, dest;
 
@@ -98,7 +98,7 @@ void drawtitel(SDL_Surface *screen)
 }
 
 /* draw the outer frame... */
-void drawframe(SDL_Surface *screen)
+void Graphics_DrawOuterFrame(SDL_Surface *screen)
 {
 	SDL_Rect src, dest;
 
@@ -114,13 +114,13 @@ void drawframe(SDL_Surface *screen)
 }
 
 /* write some text with the default font on the screen... */
-void text(SDL_Surface *screen, Uint16 x, Uint16 y, char *text)
+void Graphics_DrawText(SDL_Surface *screen, Uint16 x, Uint16 y, char *text)
 {
 	PutString(screen, x, y, text);
 }
 
 /* to be able to use the graphics module, initialize it first... */
-void initgraphics()
+void Graphics_Init()
 {
 	/* FIXME: implement error handlers...*/
 	textures = IMG_Load("data/texture.png");
@@ -137,11 +137,11 @@ void initgraphics()
 #ifdef _DEBUG
 	fprintf(stderr,"font ready...\n");
 #endif
-	atexit(exitgraphics);
+	atexit(Graphics_CleanUp);
 }
 
 /* at exit clean up the graphics module... */
-void exitgraphics()
+void Graphics_CleanUp()
 {
 	SDL_FreeSurface(textures);
 	SDL_FreeSurface(frame);

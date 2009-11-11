@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 10.11.2009 : 19:23
+ * last Modified: 11.11.2009 : 18:46
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ static Uint8 rotations, backgroundart;
  *************/
 
 /* function that clears the playfield */
-void clearplayfield()
+void Quadromania_ClearPlayfield()
 {
 	Uint8 i, j;
 	for (i = 0; i < 18; i++)
@@ -51,24 +51,24 @@ void clearplayfield()
 
 /* this function initializes the playfield and rotates squares around
  basically preparing the playfield for a game to be played */
-void initplayfield(Uint16 initialrotations, Uint8 maxrotations)
+void Quadromania_InitPlayfield(Uint16 initialrotations, Uint8 maxrotations)
 {
 	Uint16 i;
 
 	rotations = maxrotations;
-	backgroundart = ((Uint32) getrandom() % 10);
-	clearplayfield();
+	backgroundart = ((Uint32) Random_GetRandom() % 10);
+	Quadromania_ClearPlayfield();
 
 	/* rotate the squares....*/
 	for (i = 1; i < initialrotations; ++i)
-		rotate(((getrandom() % 16) + 1), ((getrandom() % 11) + 1));
+		Quadromania_Rotate(((Random_GetRandom() % 16) + 1), ((Random_GetRandom() % 11) + 1));
 
 }
 
 /* this method rotates the dots around a central point...
  actually the key algorithm in a Quadromania game ;)
  border and range checking has to be done in the calling routine... */
-void rotate(Uint32 x, Uint32 y)
+void Quadromania_Rotate(Uint32 x, Uint32 y)
 {
 	Uint8 i, j;
 	for (i = x - 1; i < (x + 2); ++i)
@@ -81,22 +81,22 @@ void rotate(Uint32 x, Uint32 y)
 }
 
 /* this method/procedure draws the complete playfield */
-void drawplayfield(SDL_Surface *screen)
+void Quadromania_DrawPlayfield(SDL_Surface *screen)
 {
 	Uint16 i, j;
 
-	drawbackground(screen, backgroundart);
-	drawframe(screen);
+	Graphics_DrawBackground(screen, backgroundart);
+	Graphics_DrawOuterFrame(screen);
 
 	for (i = 0; i < 18; i++)
 		for (j = 0; j < 13; j++)
-			drawdot(screen, i * 32 + 32, j * 32 + 32, playfield[i][j]);
+			Graphics_DrawDot(screen, i * 32 + 32, j * 32 + 32, playfield[i][j]);
 
-	text(screen, 0, 450, "Quadromania v0.2");
+	Graphics_DrawText(screen, 0, 450, "Quadromania v0.2");
 }
 
 /* this function tells you wether you have won or not... */
-BOOLEAN won()
+BOOLEAN Quadromania_IsGameWon()
 {
 	BOOLEAN ok = TRUE;
 	Uint8 i, j;
@@ -120,7 +120,7 @@ BOOLEAN won()
 }
 
 /* this function calculates the amount of initial rotatiosn for a given start level... */
-Uint16 rotationsperlevel(Uint8 level)
+Uint16 Quadromania_GetRotationsPerLevel(Uint8 level)
 {
 	return (56 + level * 13);
 }

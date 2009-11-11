@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: random.c - implements a random number generator
- * last Modified: 10.11.2003 : 19:24
+ * last Modified: 11.11.2003 : 18:51
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,13 @@
  this one is consistent. */
 static Sint32 seed = 0;
 
-void initrandom()
+void Random_InitSeed()
 {
 	seed = time(NULL);
 }
 
 /* FIXME: convert to a decent random number generator - preferrably using an algorithm my D.E. Knuth */
-Uint32 getrandom()
+Uint32 Random_GetRandom()
 {
 	Sint32 p1 = 1103515245;
 	Sint32 p2 = 12345;

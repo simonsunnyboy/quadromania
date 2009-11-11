@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 11.11.2009 : 18:35
+ * last Modified: 11.11.2009 : 18:47
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  *
  */
 
-#define __VERSION "quadromania November 10th 2009"
+#define __VERSION "quadromania November 11th 2009"
 
 #include <SDL/SDL.h>
 #include <stdio.h>
@@ -135,10 +135,10 @@ int main(int argc, char *argv[])
 	SDL_WM_SetCaption("Quadromania", NULL);
 
 	/* initialize random number generator... */
-	initrandom();
+	Random_InitSeed();
 	/* initialize graphics module... */
-	initgraphics();
-	clearplayfield();
+	Graphics_Init();
+	Quadromania_ClearPlayfield();
 
 	/* the main loop - event and automata driven :) */
 	while (!exit)
@@ -198,23 +198,23 @@ int main(int argc, char *argv[])
 			if (oldstatus != status) /* recently switched to the title screen? */
 			{
 				/* then we have to redraw it....*/
-				drawbackground(screen, 9);
-				drawframe(screen);
-				drawtitel(screen);
+				Graphics_DrawBackground(screen, 9);
+				Graphics_DrawOuterFrame(screen);
+				Graphics_DrawTitle(screen);
 
-				text(screen, 128, 240, "Start the game");
-				text(screen, 128, 272, "Select colors");
+				Graphics_DrawText(screen, 128, 240, "Start the game");
+				Graphics_DrawText(screen, 128, 272, "Select colors");
 
 				for (i = 0; i < maxrotations + 1; ++i)
-					drawdot(screen, 450 + i * 32, 268, i);
+					Graphics_DrawDot(screen, 450 + i * 32, 268, i);
 
-				text(screen, 128, 304, "Select amount of initial turns");
-				sprintf(nstr, "%d", rotationsperlevel(level));
-				text(screen, 480, 304, nstr);
+				Graphics_DrawText(screen, 128, 304, "Select amount of initial turns");
+				sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(level));
+				Graphics_DrawText(screen, 480, 304, nstr);
 
-				text(screen, 128, 372, "Instructions");
+				Graphics_DrawText(screen, 128, 372, "Instructions");
 
-				text(screen, 128, 420, "Quit");
+				Graphics_DrawText(screen, 128, 420, "Quit");
 
 				SDL_Flip(screen);
 				if (status == SETUPCHANGED)
@@ -233,9 +233,9 @@ int main(int argc, char *argv[])
 						if ((mouse.y > 240) && (mouse.y < 264))
 						{
 							status = GAME;
-							initplayfield(rotationsperlevel(level),
+							Quadromania_InitPlayfield(Quadromania_GetRotationsPerLevel(level),
 									maxrotations);
-							drawplayfield(screen);
+							Quadromania_DrawPlayfield(screen);
 							SDL_Flip(screen);
 
 						}
@@ -290,12 +290,12 @@ int main(int argc, char *argv[])
 							&& (yraster < 12))
 					{
 						/* then rotate the correct 3x3 part... */
-						rotate(xraster, yraster);
-						drawplayfield(screen);
+						Quadromania_Rotate(xraster, yraster);
+						Quadromania_DrawPlayfield(screen);
 						SDL_Flip(screen);
 
 						/* check for succeful end... */
-						if (won())
+						if (Quadromania_IsGameWon())
 							status = WON; /* if yes (board cleared to red) - well go to end screen :) */
 
 					}
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 				SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64,
 						200));
 
-				text(screen, 150, 227, "Congratulations! You've won!");
+				Graphics_DrawText(screen, 150, 227, "Congratulations! You've won!");
 				SDL_Flip(screen);
 			}
 
