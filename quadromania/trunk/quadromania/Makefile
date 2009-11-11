@@ -31,7 +31,7 @@ CC=gcc
 	
 all: quadromania
 
-quadromania: main.c graphics.o random.o SFont.o quadromania.o
+quadromania: main.c main.h graphics.o random.o SFont.o quadromania.o
 	$(CC) $(CFLAGS) main.c -o quadromania graphics.c random.o SFont.o quadromania.o $(SDL_LIB) -lSDL_image
 
 graphics.o: graphics.c graphics.h

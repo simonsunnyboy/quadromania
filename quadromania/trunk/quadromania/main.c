@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 11.11.2009 : 18:47
+ * last Modified: 11.11.2009 : 19:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,36 +35,23 @@
 #include "quadromania.h"
 #include "boolean.h"
 
-enum GAMESTATE
-{
-	UNINITIALIZED, NONE, TITLE, SETUPCHANGED, GAME, WON, QUIT
-};
+#include "main.h"
+
 struct MOUSE
 {
 	Uint16 x, y;
 	Uint8 button;
 };
 
+SDL_Surface *screen; /* SDL Surface for video memory */
+SDL_Event event; /* SDL event for keyboard, mouse and focus actions... */
+
 /* the main function - program execution starts here... */
 int main(int argc, char *argv[])
 {
-	Uint16 fullscreen = 0, i, ok = FALSE, exit = FALSE, mouseclick = FALSE;
-
-	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
-	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
-
-	char nstr[10];
-
-	SDL_Surface *screen; /* SDL Surface for video memory */
-	SDL_Event event; /* SDL event for keyboard, mouse and focus actions... */
-	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
-	struct MOUSE mouse;
-	mouse.x = 0;
-	mouse.y = 0;
-	mouse.button = 0;
-
-	status = UNINITIALIZED;
-	oldstatus = status;
+	Uint16 i;
+	BOOLEAN ok = FALSE;
+	BOOLEAN fullscreen = FALSE;
 
 	/* parse command line and set startup flags accordingly... */
 	for (i = 1; i < argc; i++)
@@ -112,23 +99,36 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	if(InitGameEngine(fullscreen) == TRUE)
+	{
+		MainHandler();
+		return(0);
+	}
+	else
+	{
+		return(1);
+	}
+}
+
+BOOLEAN InitGameEngine(BOOLEAN fullscreen)
+{
 	/* initialize SDL...  */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		fprintf(stderr, "%s\n\nUnable to initialize SDL: %s\n", __VERSION,
 				SDL_GetError());
-		return (1);
+		return (FALSE);
 	}
 	/* make sure to shutdown SDL at program end... */
 	atexit(SDL_Quit);
 
 	/* Set an appropriate 16-bit video mode. */
-	if ((screen = SDL_SetVideoMode(640, 480, 16, (fullscreen ? SDL_FULLSCREEN
+	if ((screen = SDL_SetVideoMode(640, 480, 16, ((fullscreen == TRUE) ? SDL_FULLSCREEN
 			: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
 	{
 		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
 				__VERSION, SDL_GetError());
-		return (1);
+		return (FALSE);
 	}
 
 	/* set window title.. */
@@ -140,6 +140,27 @@ int main(int argc, char *argv[])
 	Graphics_Init();
 	Quadromania_ClearPlayfield();
 
+	return(TRUE);
+}
+
+void MainHandler()
+{
+	BOOLEAN exit = FALSE, mouseclick = FALSE;
+	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
+	struct MOUSE mouse;
+
+	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
+	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
+	Uint16 i;
+
+	char nstr[10];
+
+	mouse.x = 0;
+	mouse.y = 0;
+	mouse.button = 0;
+
+	status = UNINITIALIZED;
+	oldstatus = status;
 	/* the main loop - event and automata driven :) */
 	while (!exit)
 	{
@@ -348,5 +369,4 @@ int main(int argc, char *argv[])
 
 	}
 
-	return (0);
 }
