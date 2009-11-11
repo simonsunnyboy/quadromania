@@ -1,3 +1,7 @@
+11.11.2009:
+	- refactored function and procedures names according to <<Module>>_Function convention
+	- refactored main() into distinct parts and subroutines
+	- LINT
 10.11.2009:
 	- project resurrected for future port to GP2X Wiz
 	- cleanup source formatting
