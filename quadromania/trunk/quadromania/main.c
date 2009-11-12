@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 11.11.2009 : 19:12
+ * last Modified: 11.11.2009 : 19:16
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,6 @@
  *
  */
 
-#define __VERSION "quadromania November 11th 2009"
-
 #include <SDL/SDL.h>
 #include <stdio.h>
 #include <string.h>
@@ -34,6 +32,7 @@
 #include "graphics.h"
 #include "quadromania.h"
 #include "boolean.h"
+#include "SFont.h"
 
 #include "main.h"
 
@@ -68,10 +67,10 @@ int main(int argc, char *argv[])
 		if ((strcmp(argv[i], "-v") == 0) || (strcmp(argv[i], "--version") == 0))
 		{
 			/* print version information.... */
-			fprintf(stderr, "%s\n\n", __VERSION);
+			fprintf(stderr, "%s\n\n", VERSION);
 			fprintf(
 					stderr,
-					"(c) 2002 by Matthias Arndt <marndt@asmsoftware.de>\na game by ASM Software http://www.asmsoftware.de/\nThe GNU General Public License applies. See the file COPYING for details.\n");
+					"(c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de>\na game by ASM Software http://www.asmsoftware.de/\nThe GNU General Public License applies. See the file COPYING for details.\n");
 			fprintf(stderr, "Compiled on %s at %s\n\n", __DATE__, __TIME__);
 			return (1);
 		}
@@ -80,7 +79,7 @@ int main(int argc, char *argv[])
 				|| (strcmp(argv[i], "-?") == 0))
 		{
 			/* general program help.... */
-			fprintf(stderr, "%s\n\n", __VERSION);
+			fprintf(stderr, "%s\n\n", VERSION);
 			fprintf(
 					stderr,
 					"Usage: %s [-f|--fullscreen] [-v|--version] [-h|-?|--help] \n",
@@ -93,7 +92,7 @@ int main(int argc, char *argv[])
 		/* check for error in command line... */
 		if (!ok)
 		{
-			fprintf(stderr, "%s\n\n", __VERSION);
+			fprintf(stderr, "%s\n\n", VERSION);
 			fprintf(stderr, "Unknown command line option: %s\n", argv[i]);
 			return (2);
 		}
@@ -115,7 +114,7 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	/* initialize SDL...  */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		fprintf(stderr, "%s\n\nUnable to initialize SDL: %s\n", __VERSION,
+		fprintf(stderr, "%s\n\nUnable to initialize SDL: %s\n", VERSION,
 				SDL_GetError());
 		return (FALSE);
 	}
@@ -127,12 +126,12 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 			: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
 	{
 		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
-				__VERSION, SDL_GetError());
+				VERSION, SDL_GetError());
 		return (FALSE);
 	}
 
 	/* set window title.. */
-	SDL_WM_SetCaption("Quadromania", NULL);
+	SDL_WM_SetCaption(VERSION, NULL);
 
 	/* initialize random number generator... */
 	Random_InitSeed();
@@ -279,6 +278,12 @@ void MainHandler()
 								level = 1;
 						}
 
+						/* "Instructions" ? */
+						if((mouse.y>372)&&(mouse.y<396))
+						{
+							status=INSTRUCTIONS;
+						}
+
 						/* Quit? */
 						if ((mouse.y > 420) && (mouse.y < 444))
 						{
@@ -287,6 +292,22 @@ void MainHandler()
 					}
 				}
 				mouseclick = FALSE;
+			}
+			break;
+		case INSTRUCTIONS:
+			/* shall we show the INSTRUCTIONS screen? */
+			if(oldstatus!=status)
+			{
+				oldstatus=status;
+				/* redraw instructions screen */
+				Graphics_DrawInstructions(screen);
+
+			}
+			if(mouseclick==TRUE)
+			{
+				if((mouse.button==1)&&(mouse.y>460))
+					status=TITLE;
+
 			}
 			break;
 		case GAME:
@@ -315,7 +336,11 @@ void MainHandler()
 						Quadromania_DrawPlayfield(screen);
 						SDL_Flip(screen);
 
-						/* check for succeful end... */
+						/* check for unsuccessful end*/
+						if(Quadromania_IsTurnLimithit())
+							status=GAMEOVER;
+
+						/* check for successful game end... */
 						if (Quadromania_IsGameWon())
 							status = WON; /* if yes (board cleared to red) - well go to end screen :) */
 
@@ -335,7 +360,7 @@ void MainHandler()
 
 				dest.x = 10;
 				dest.y = 220;
-				dest.w = 629;
+				dest.w = 620;
 				dest.h = 40;
 				SDL_FillRect(screen, &dest, 0);
 
@@ -346,7 +371,7 @@ void MainHandler()
 				SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64,
 						200));
 
-				Graphics_DrawText(screen, 150, 227, "Congratulations! You've won!");
+				XCenteredString(screen, 226, "Congratulations! You've won!");
 				SDL_Flip(screen);
 			}
 
@@ -354,6 +379,35 @@ void MainHandler()
 			{
 				mouseclick = FALSE;
 				status = TITLE;
+			}
+			break;
+
+		case GAMEOVER:
+			if(status!=oldstatus)
+			{
+				SDL_Rect dest;
+				oldstatus=status;
+				/* draw some message ...*/
+
+				dest.x=10;
+				dest.y=220;
+				dest.w=620;
+				dest.h=40;
+				SDL_FillRect(screen,&dest,0);
+
+				dest.x=12;
+				dest.y=222;
+				dest.w=617;
+				dest.h=36;
+				SDL_FillRect(screen,&dest,SDL_MapRGB(screen->format,200,64,0));
+				XCenteredString(screen, 226, "GAME OVER! You hit the turn limit!");
+				SDL_Flip(screen);
+			}
+
+			if(mouseclick==TRUE)
+			{
+				mouseclick=FALSE;
+				status=TITLE;
 			}
 			break;
 		case QUIT:

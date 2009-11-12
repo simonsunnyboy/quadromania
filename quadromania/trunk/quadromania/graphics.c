@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 11.11.2009 : 18:46
+ * last Modified: 12.11.2009 : 19:17
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,6 +97,44 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 
 }
 
+/* draws the instructions screen */
+void Graphics_DrawInstructions(SDL_Surface *screen)
+{
+    SDL_Rect src,dest;
+
+    Graphics_DrawBackground(screen,0);
+    Graphics_DrawOuterFrame(screen);
+    /* draw logo */
+    src.x=0;
+    src.y=0;
+    src.w=titel->w;
+    src.h=titel->h;
+    dest.x=((screen->w/2)-(titel->w/2));
+    dest.y=32;
+    dest.w=0;
+    dest.h=0;
+    SDL_BlitSurface(titel,&src,screen,&dest);
+    XCenteredString(screen, 120, "Instructions");
+
+    Graphics_DrawText(screen,32,150,"Quadromania is a board game.");
+    Graphics_DrawText(screen,32,170,"Your task is to restore the originating board filled with");
+    Graphics_DrawText(screen,32,190,"red stones. The computer will pick a named amount of");
+    Graphics_DrawText(screen,32,210,"3x3 tile sets and will flip the colours of the selected");
+    Graphics_DrawText(screen,32,230,"tiles.");
+    Graphics_DrawText(screen,32,250,"This means a red tile will become green, a green one the");
+    Graphics_DrawText(screen,32,270,"next colour in the amount of colours, red again in the");
+    Graphics_DrawText(screen,32,290,"simplest case.");
+    Graphics_DrawText(screen,32,320,"You select the amount of colours to use and the amount of");
+    Graphics_DrawText(screen,32,340,"initial rotations.");
+    Graphics_DrawText(screen,32,360,"In the running game click on the center point of a 3x3 tile");
+    Graphics_DrawText(screen,32,380,"set to exchange that selected set following the rules above.");
+    Graphics_DrawText(screen,32,400,"Restore the board full of red stones before you reach the");
+    Graphics_DrawText(screen,32,420,"limit of maximum turns.");
+
+    Graphics_DrawText(screen,400,460,"Click here to continue!");
+    SDL_Flip(screen);
+}
+
 /* draw the outer frame... */
 void Graphics_DrawOuterFrame(SDL_Surface *screen)
 {
@@ -137,6 +175,13 @@ void Graphics_Init()
 #ifdef _DEBUG
 	fprintf(stderr,"font ready...\n");
 #endif
+
+	/* did our graphics load properly? (remember NULL pointers for surfaces means "no valid surface data loaded" */
+	if((textures==NULL)||(frame==NULL)||(dots==NULL)||(titel==NULL)||(copyright==NULL))
+	{
+		fprintf (stderr, "%s initgraphics(): One or more image files failed to load properly!\n\n",PACKAGE);
+		exit(2);
+	}
 	atexit(Graphics_CleanUp);
 }
 

@@ -2,8 +2,8 @@
  * Quadromania
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
- * File: main.h - declarations for the main module
- * last Modified: 11.11.2009 : 19:12
+ * File: version.h - versioning information of the package
+ * last Modified: 12.11.2009 : 19:16
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,24 +23,10 @@
  *
  */
 
-#ifndef __MAIN_H
-	#define __MAIN_H
+#ifndef __VERSION_H
+	#define __VERSION_H
 
-    #include "version.h"
-
-	/**************************
-	 * DATA TYPE DECLARATIONS *
-	 **************************/
-	enum GAMESTATE
-	{
-		UNINITIALIZED, NONE, TITLE, INSTRUCTIONS, SETUPCHANGED, GAME, WON, GAMEOVER, QUIT
-	};
-
-	/**************
-	 * PROTOTYPES *
-	 **************/
-
-	BOOLEAN InitGameEngine(BOOLEAN activate_fullscreen);
-	void MainHandler(void);
+    #define PACKAGE "quadromania"
+    #define VERSION "quadromania November 12th 2009"
 
 #endif

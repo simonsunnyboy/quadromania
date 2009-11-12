@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 11.11.2009 : 18:46
+ * last Modified: 12.11.2009 : 19:16
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@
  */
 #ifndef __GRAPHICS_H
 	#define __GRAPHICS_H
+
+    #include "version.h"
+
 	/**************
 	 * PROTOTYPES *
 	 **************/
@@ -33,6 +36,7 @@
 	void Graphics_DrawOuterFrame(SDL_Surface *);
 	void Graphics_DrawText(SDL_Surface *, Uint16, Uint16, char *);
 	void Graphics_DrawTitle(SDL_Surface *);
+	void Graphics_DrawInstructions(SDL_Surface *);
 	void Graphics_Init(void);
 	void Graphics_CleanUp(void);
 #endif
