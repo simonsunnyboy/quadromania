@@ -1,0 +1,41 @@
+13.11.2009:
+	- added data/icons/ directory with window icons
+	- created tag release-0.2
+
+12.11.2009:
+	- basic scoring implemented
+	- added GAMEOVER possibility (turn limit hit)
+	- added VERSION information header
+	- added instructions screen
+
+11.11.2009:
+	- refactored function and procedures names according to <<Module>>_Function convention
+	- refactored main() into distinct parts and subroutines
+	- LINT
+	
+10.11.2009:
+	- project resurrected for future port to GP2X Wiz
+	- cleanup source formatting
+	- cleanup datatypes in use (where applicable)
+	- typedefed BOOLEAN properly
+	- added INCLUDE sentries to all project header files
+
+26.01.2003:
+	- game at least playable (no counters, no timer)
+	- simple screen for winning the game
+	
+20.12.2002:
+	- first code for the game logic
+	- changed to platform independant SDL data types for int and long
+	- added menu code for the game settings
+	- added a graphic with copyright message
+
+19.12.2002:
+	- source compiled on MinGW 2.0 without modifications - Windows port possible! 
+
+17.12.2002:
+	- project started
+	- graphics module added
+	- made a simple graphics set (any volunteers to make a better one? :) )
+	- skeleton of main module
+	
