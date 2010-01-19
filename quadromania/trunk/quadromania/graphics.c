@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 19.01.2010 : 17:50
+ * last Modified: 19.01.2010 : 18:50
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@ void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
 	Uint8 i, j;
 	SDL_Rect src, dest;
 
-	const Uint8 x_blits = (screen->w / texture_width);
-	const Uint8 y_blits = (screen->h / texture_height);
+	const Uint8 x_blits = (SCREEN_WIDTH / texture_width);
+	const Uint8 y_blits = (SCREEN_HEIGHT / texture_height);
 
 	/* draw the textured background... */
 	for (j = 0; j < y_blits; j++)
@@ -85,7 +85,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 	src.y = 0;
 	src.w = titel->w;
 	src.h = titel->h;
-	dest.x = ((screen->w / 2) - (titel->w / 2));
+	dest.x = ((SCREEN_WIDTH / 2) - (titel->w / 2));
 	dest.y = 32;
 	dest.w = 0;
 	dest.h = 0;
@@ -94,7 +94,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 	src.y = 0;
 	src.w = copyright->w;
 	src.h = copyright->h;
-	dest.x = ((screen->w / 2) - (copyright->w / 2));
+	dest.x = ((SCREEN_WIDTH / 2) - (copyright->w / 2));
 	dest.y = 120;
 	dest.w = 0;
 	dest.h = 0;
@@ -114,7 +114,7 @@ void Graphics_DrawInstructions(SDL_Surface *screen)
     src.y=0;
     src.w=titel->w;
     src.h=titel->h;
-    dest.x=((screen->w/2)-(titel->w/2));
+    dest.x=((SCREEN_WIDTH/2)-(titel->w/2));
     dest.y=32;
     dest.w=0;
     dest.h=0;
