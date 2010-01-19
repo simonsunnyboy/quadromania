@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 12.11.2009 : 19:16
+ * last Modified: 19.01.2010 : 19:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ void Quadromania_DrawPlayfield(SDL_Surface *screen)
 
 	for (i = 0; i < 18; i++)
 		for (j = 0; j < 13; j++)
-			Graphics_DrawDot(screen, i * 32 + 32, j * 32 + 32, playfield[i][j]);
+			Graphics_DrawDot(screen, i * Graphics_GetDotWidth() + Graphics_GetDotWidth(), j * Graphics_GetDotHeight() + Graphics_GetDotHeight(), playfield[i][j]);
 
 	/* draw status line */
 	sprintf(txt,"Used turns: %d",turns);
