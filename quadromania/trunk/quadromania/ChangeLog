@@ -1,3 +1,10 @@
+19.01.2010:
+	- added dynamic sizes of graphics data
+	- screen mode configurable by #define SCREENRES
+
+15.11.2009:
+	- added event handling module (event.c)
+
 13.11.2009:
 	- added data/icons/ directory with window icons
 	- created tag release-0.2

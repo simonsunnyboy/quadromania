@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 12.11.2009 : 19:17
+ * last Modified: 19.01.2010 : 17:50
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,22 +33,27 @@
 
 static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright;
 
+static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width, texture_height;
+
 /* texture the complete screen with 1 out of 10 textures... */
 void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
 {
 	Uint8 i, j;
 	SDL_Rect src, dest;
 
+	const Uint8 x_blits = (screen->w / texture_width);
+	const Uint8 y_blits = (screen->h / texture_height);
+
 	/* draw the textured background... */
-	for (j = 0; j < 6; j++)
-		for (i = 0; i < 8; i++)
+	for (j = 0; j < y_blits; j++)
+		for (i = 0; i < x_blits; i++)
 		{
-			src.x = (texture % 10) * 80;
+			src.x = (texture % NR_OF_TEXTURES) * texture_width;
 			src.y = 0;
-			src.w = 80;
-			src.h = 80;
-			dest.x = i * 80;
-			dest.y = j * 80;
+			src.w = texture_width;
+			src.h = texture_height;
+			dest.x = i * texture_width;
+			dest.y = j * texture_height;
 			dest.w = 0;
 			dest.h = 0;
 			SDL_BlitSurface(textures, &src, screen, &dest);
@@ -60,10 +65,10 @@ void Graphics_DrawDot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
 {
 	SDL_Rect src, dest;
 
-	src.x = (number % 5) * 32;
+	src.x = (number % NR_OF_DOTS) * dot_width;
 	src.y = 0;
-	src.w = 32;
-	src.h = 32;
+	src.w = dot_width;
+	src.h = dot_height;
 	dest.x = x;
 	dest.y = y;
 	dest.w = 0;
@@ -142,12 +147,12 @@ void Graphics_DrawOuterFrame(SDL_Surface *screen)
 
 	src.x = 0;
 	src.y = 0;
-	src.w = frame->w;
-	src.h = frame->h;
+	src.w = frame_width;
+	src.h = frame_height;
 	dest.x = 0;
 	dest.y = 0;
-	dest.w = frame->w;
-	dest.h = frame->h;
+	dest.w = frame_width;
+	dest.h = frame_height;
 	SDL_BlitSurface(frame, &src, screen, &dest);
 }
 
@@ -182,6 +187,15 @@ void Graphics_Init()
 		fprintf (stderr, "%s initgraphics(): One or more image files failed to load properly!\n\n",PACKAGE);
 		exit(2);
 	}
+
+	/* collect information of sizes of the various graphics */
+	frame_width = (Uint16) frame->w;
+	frame_height = (Uint16) frame->h;
+	dot_width = (Uint16) (dots->w / NR_OF_DOTS);
+	dot_height = (Uint16) (dots->h);
+	texture_width = (Uint16) (textures->w / NR_OF_TEXTURES);
+	texture_height = (Uint16) (textures->h);
+
 	atexit(Graphics_CleanUp);
 }
 
@@ -198,3 +212,16 @@ void Graphics_CleanUp()
 #endif
 
 }
+
+/* get width of a dot tile */
+Uint16 Graphics_GetDotWidth()
+{
+	return(dot_width);
+}
+
+/* get heigth of a dot tile */
+Uint16 Graphics_GetDotHeight()
+{
+	return(dot_height);
+}
+

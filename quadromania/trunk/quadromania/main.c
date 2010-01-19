@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 11.11.2009 : 19:16
+ * last Modified: 19.01.2010 : 18:06
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,34 +35,34 @@
 #include "SFont.h"
 
 #include "main.h"
-
-struct MOUSE
-{
-	Uint16 x, y;
-	Uint8 button;
-};
+#include "event.h"
 
 SDL_Surface *screen; /* SDL Surface for video memory */
-SDL_Event event; /* SDL event for keyboard, mouse and focus actions... */
 
 /* the main function - program execution starts here... */
 int main(int argc, char *argv[])
 {
 	Uint16 i;
 	BOOLEAN ok = FALSE;
+#if(HAVE_WINDOWED_MODE == 1)
 	BOOLEAN fullscreen = FALSE;
+#else
+	const BOOLEAN fullscreen = TRUE;
+#endif
 
 	/* parse command line and set startup flags accordingly... */
 	for (i = 1; i < argc; i++)
 	{
 		ok = FALSE;
+#if(HAVE_WINDOWED_MODE == 1)
 		if ((strcmp(argv[i], "-f") == 0) || (strcmp(argv[i], "--fullscreen")
-				== 0))
+						== 0))
 		{
 			/* fullscreen mode requested... */
 			fullscreen = TRUE;
 			ok = TRUE;
 		}
+#endif
 
 		if ((strcmp(argv[i], "-v") == 0) || (strcmp(argv[i], "--version") == 0))
 		{
@@ -84,7 +84,9 @@ int main(int argc, char *argv[])
 					stderr,
 					"Usage: %s [-f|--fullscreen] [-v|--version] [-h|-?|--help] \n",
 					argv[0]);
+#if(HAVE_WINDOWED_MODE == 1)
 			fprintf(stderr, "              -f  activate fullscreen mode\n");
+#endif
 			fprintf(stderr, "              -v  prints version information\n\n");
 			return (1);
 		}
@@ -98,14 +100,14 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if(InitGameEngine(fullscreen) == TRUE)
+	if (InitGameEngine(fullscreen) == TRUE)
 	{
 		MainHandler();
-		return(0);
+		return (0);
 	}
 	else
 	{
-		return(1);
+		return (1);
 	}
 }
 
@@ -122,13 +124,27 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	atexit(SDL_Quit);
 
 	/* Set an appropriate 16-bit video mode. */
-	if ((screen = SDL_SetVideoMode(640, 480, 16, ((fullscreen == TRUE) ? SDL_FULLSCREEN
-			: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
+#if(SCREENRES == _HIGH)
+	if ((screen = SDL_SetVideoMode(640, 480, 16,
+			((fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SDL_HWSURFACE
+					| SDL_DOUBLEBUF)) == NULL)
 	{
 		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
 				VERSION, SDL_GetError());
 		return (FALSE);
 	}
+#elif(SCREENRES == _LOW)
+	if ((screen = SDL_SetVideoMode(320, 240, 16, ((fullscreen == TRUE) ? SDL_FULLSCREEN
+									: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
+	{
+		fprintf(stderr, "%s\n\nUnable to set 320x240x16 video mode: %s\n",
+				VERSION, SDL_GetError());
+		return (FALSE);
+	}
+#else
+#error screen resolution is not properly defined
+	return(FALSE);
+#endif
 
 	/* set window title.. */
 	SDL_WM_SetCaption(VERSION, NULL);
@@ -137,16 +153,16 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	Random_InitSeed();
 	/* initialize graphics module... */
 	Graphics_Init();
+	/* initialize event handler */
+	Event_Init();
 	Quadromania_ClearPlayfield();
 
-	return(TRUE);
+	return (TRUE);
 }
 
 void MainHandler()
 {
-	BOOLEAN exit = FALSE, mouseclick = FALSE;
 	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
-	struct MOUSE mouse;
 
 	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
 	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
@@ -154,60 +170,29 @@ void MainHandler()
 
 	char nstr[10];
 
-	mouse.x = 0;
-	mouse.y = 0;
-	mouse.button = 0;
-
 	status = UNINITIALIZED;
 	oldstatus = status;
 	/* the main loop - event and automata driven :) */
-	while (!exit)
+	do
 	{
 		/* Event reading and parsing.... */
-		if (SDL_PollEvent(&event))
+		Event_ProcessInput();
+		if (Event_IsESCPressed() == TRUE)
 		{
-			switch (event.type)
+			if (status == GAME)
 			{
-			/* mouse handling... */
-			case SDL_MOUSEBUTTONUP:
-				mouseclick = FALSE;
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				/* collect the mouse data */
-				mouse.x = event.button.x;
-				mouse.y = event.button.y;
-				mouse.button = event.button.button;
-				mouseclick = TRUE;
-				/* fprintf(stderr,"click %d at %d,%d\n",mouse.button,mouse.x,mouse.y); */
-				break;
-				/* keyboard handling... */
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym)
-				{
-				case SDLK_ESCAPE:
-					/* ESC pressed? */
-					if (status == GAME)
-					{
-						/* is there a game running? if yes then back to title screen...*/
-						status = TITLE;
-					}
-					else
-					{
-						status = QUIT;
-					}
-					break;
-				default:
-					break;
-				}
-				break;
-				/* SDL_QUIT event (window close) */
-			case SDL_QUIT:
-				status = QUIT;
-				break;
-			default:
-				/* default is an unhandled event... */
-				break;
+				/* is there a game running? if yes then back to title screen...*/
+				status = TITLE;
 			}
+			else
+			{
+				status = QUIT;
+			}
+			Event_DebounceKeys();
+		}
+		if (Event_QuitRequested() == TRUE)
+		{
+			status = QUIT;
 		}
 
 		/* act upon the state of the event driven automata... */
@@ -228,7 +213,8 @@ void MainHandler()
 				for (i = 0; i < maxrotations + 1; ++i)
 					Graphics_DrawDot(screen, 450 + i * 32, 268, i);
 
-				Graphics_DrawText(screen, 128, 304, "Select amount of initial turns");
+				Graphics_DrawText(screen, 128, 304,
+						"Select amount of initial turns");
 				sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(level));
 				Graphics_DrawText(screen, 480, 304, nstr);
 
@@ -243,17 +229,19 @@ void MainHandler()
 			}
 
 			/* check for clicks in the menu */
-			if (mouseclick == TRUE)
+			if (Event_MouseClicked() == TRUE)
 			{
-				if (mouse.button == 1)
+				if (Event_GetMouseButton() == 1)
 				{
-					if ((mouse.x > 128) && (mouse.x < 450))
+					if ((Event_GetMouseX() > 128) && (Event_GetMouseX() < 450))
 					{
 						/* "start a new game" ? */
-						if ((mouse.y > 240) && (mouse.y < 264))
+						if ((Event_GetMouseY() > 240) && (Event_GetMouseY()
+								< 264))
 						{
 							status = GAME;
-							Quadromania_InitPlayfield(Quadromania_GetRotationsPerLevel(level),
+							Quadromania_InitPlayfield(
+									Quadromania_GetRotationsPerLevel(level),
 									maxrotations);
 							Quadromania_DrawPlayfield(screen);
 							SDL_Flip(screen);
@@ -261,7 +249,8 @@ void MainHandler()
 						}
 
 						/* "Select Colors" ? */
-						if ((mouse.y > 272) && (mouse.y < 296))
+						if ((Event_GetMouseY() > 272) && (Event_GetMouseY()
+								< 296))
 						{
 							status = SETUPCHANGED;
 							++maxrotations;
@@ -270,7 +259,8 @@ void MainHandler()
 						}
 
 						/* "Select Colors" ? */
-						if ((mouse.y > 304) && (mouse.y < 328))
+						if ((Event_GetMouseY() > 304) && (Event_GetMouseY()
+								< 328))
 						{
 							status = SETUPCHANGED;
 							++level;
@@ -279,35 +269,39 @@ void MainHandler()
 						}
 
 						/* "Instructions" ? */
-						if((mouse.y>372)&&(mouse.y<396))
+						if ((Event_GetMouseY() > 372) && (Event_GetMouseY()
+								< 396))
 						{
-							status=INSTRUCTIONS;
+							status = INSTRUCTIONS;
 						}
 
 						/* Quit? */
-						if ((mouse.y > 420) && (mouse.y < 444))
+						if ((Event_GetMouseY() > 420) && (Event_GetMouseY()
+								< 444))
 						{
 							status = QUIT;
 						}
 					}
 				}
-				mouseclick = FALSE;
+				Event_DebounceMouse();
 			}
 			break;
 		case INSTRUCTIONS:
 			/* shall we show the INSTRUCTIONS screen? */
-			if(oldstatus!=status)
+			if (oldstatus != status)
 			{
-				oldstatus=status;
+				oldstatus = status;
 				/* redraw instructions screen */
 				Graphics_DrawInstructions(screen);
 
 			}
-			if(mouseclick==TRUE)
+			if (Event_MouseClicked() == TRUE)
 			{
-				if((mouse.button==1)&&(mouse.y>460))
-					status=TITLE;
-
+				if ((Event_GetMouseButton() == 1) && (Event_GetMouseY() > 460))
+				{
+					Event_DebounceMouse();
+					status = TITLE;
+				}
 			}
 			break;
 		case GAME:
@@ -316,13 +310,16 @@ void MainHandler()
 				oldstatus = status;
 
 			/* mousebutton clicked?*/
-			if (mouseclick == TRUE)
+			if (Event_MouseClicked() == TRUE)
 			{
-				if (mouse.button == 1)
+				if (Event_GetMouseButton() == 1)
 				{
 					Uint16 xraster, yraster;
-					xraster = (Uint16) ((mouse.x - 32) / 32);
-					yraster = (Uint16) ((mouse.y - 32) / 32);
+					xraster = (Uint16) ((Event_GetMouseX()
+							- Graphics_GetDotWidth()) / Graphics_GetDotWidth());
+					yraster = (Uint16) ((Event_GetMouseY()
+							- Graphics_GetDotHeight())
+							/ Graphics_GetDotHeight());
 
 #ifdef _DEBUG
 					fprintf(stderr,"click at %d,%d\n",xraster,yraster);
@@ -337,8 +334,8 @@ void MainHandler()
 						SDL_Flip(screen);
 
 						/* check for unsuccessful end*/
-						if(Quadromania_IsTurnLimithit())
-							status=GAMEOVER;
+						if (Quadromania_IsTurnLimithit())
+							status = GAMEOVER;
 
 						/* check for successful game end... */
 						if (Quadromania_IsGameWon())
@@ -347,7 +344,7 @@ void MainHandler()
 					}
 
 				}
-				mouseclick = FALSE;
+				Event_DebounceMouse();
 			}
 
 			break;
@@ -375,44 +372,45 @@ void MainHandler()
 				SDL_Flip(screen);
 			}
 
-			if (mouseclick == TRUE)
+			if (Event_MouseClicked() == TRUE)
 			{
-				mouseclick = FALSE;
+				Event_DebounceMouse();
 				status = TITLE;
 			}
 			break;
 
 		case GAMEOVER:
-			if(status!=oldstatus)
+			if (status != oldstatus)
 			{
 				SDL_Rect dest;
-				oldstatus=status;
+				oldstatus = status;
 				/* draw some message ...*/
 
-				dest.x=10;
-				dest.y=220;
-				dest.w=620;
-				dest.h=40;
-				SDL_FillRect(screen,&dest,0);
+				dest.x = 10;
+				dest.y = 220;
+				dest.w = 620;
+				dest.h = 40;
+				SDL_FillRect(screen, &dest, 0);
 
-				dest.x=12;
-				dest.y=222;
-				dest.w=617;
-				dest.h=36;
-				SDL_FillRect(screen,&dest,SDL_MapRGB(screen->format,200,64,0));
-				XCenteredString(screen, 226, "GAME OVER! You hit the turn limit!");
+				dest.x = 12;
+				dest.y = 222;
+				dest.w = 617;
+				dest.h = 36;
+				SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 200, 64,
+						0));
+				XCenteredString(screen, 226,
+						"GAME OVER! You hit the turn limit!");
 				SDL_Flip(screen);
 			}
 
-			if(mouseclick==TRUE)
+			if (Event_MouseClicked() == TRUE)
 			{
-				mouseclick=FALSE;
-				status=TITLE;
+				Event_DebounceMouse();
+				status = TITLE;
 			}
 			break;
 		case QUIT:
 			/* so you want to quit? */
-			exit = TRUE;
 			break;
 		default:
 			/* unknown or undefined state - then go to the title screen...*/
@@ -421,6 +419,6 @@ void MainHandler()
 			break;
 		}
 
-	}
+	} while (status != QUIT);
 
 }

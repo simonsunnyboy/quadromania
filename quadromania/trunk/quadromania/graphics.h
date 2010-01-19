@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 12.11.2009 : 19:16
+ * last Modified: 19.01.2010 : 17:56
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,14 @@
 	#define __GRAPHICS_H
 
     #include "version.h"
+	#include <SDL/SDL.h>
+
+	/************
+	 * DEFINES  *
+	 ************/
+
+	#define NR_OF_TEXTURES 10
+	#define NR_OF_DOTS     5
 
 	/**************
 	 * PROTOTYPES *
@@ -39,4 +47,6 @@
 	void Graphics_DrawInstructions(SDL_Surface *);
 	void Graphics_Init(void);
 	void Graphics_CleanUp(void);
+	Uint16 Graphics_GetDotWidth(void);
+	Uint16 Graphics_GetDotHeight(void);
 #endif

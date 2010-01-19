@@ -1,9 +1,9 @@
 #
 # Quadromania
-# (c) 2002/2003 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+# (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 17.12.2002 : 16:42
+# last Modified: 19.01.2010 : 18:10
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,17 +31,20 @@ CC=gcc
 	
 all: quadromania
 
-quadromania: main.c main.h graphics.o random.o SFont.o quadromania.o
-	$(CC) $(CFLAGS) main.c -o quadromania graphics.c random.o SFont.o quadromania.o $(SDL_LIB) -lSDL_image
+quadromania: main.o graphics.o event.o random.o SFont.o quadromania.o 
+	$(CC) $(CFLAGS) -o quadromania main.o graphics.o event.o random.o SFont.o quadromania.o $(SDL_LIB) -lSDL_image
 
-graphics.o: graphics.c graphics.h
+main.o: main.c main.h version.h
+
+graphics.o: graphics.c graphics.h version.h
 
 random.o: random.c random.h
 
 quadromania.o: quadromania.c quadromania.h boolean.h
 
-SFont.o: SFont.c SFont.h
+event.o: event.c event.h boolean.h
 
+SFont.o: SFont.c SFont.h
 
 # default make rule for .c files - compile to .o
 .c.o: 
