@@ -1,6 +1,7 @@
 19.01.2010:
 	- added dynamic sizes of graphics data
 	- screen mode configurable by #define SCREENRES
+	- added sysconfig.h to allow for port specific settings at compile time
 
 15.11.2009:
 	- added event handling module (event.c)
