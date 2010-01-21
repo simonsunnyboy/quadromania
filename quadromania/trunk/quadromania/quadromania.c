@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 19.01.2010 : 19:12
+ * last Modified: 21.01.2010 : 18:21
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,8 @@ const Uint8 Quadromania_Basecolor        = 0;
 /* data structures... */
 static Uint8 playfield[18][13];
 /* flags for the actual game state */
-static Uint8 rotations, backgroundart, turns, limit;
+static Uint8 rotations, backgroundart;
+static Uint16 turns, limit;
 
 
 /*************

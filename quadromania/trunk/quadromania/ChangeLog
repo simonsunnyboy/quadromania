@@ -1,3 +1,7 @@
+21.01.2010:
+	- added a user interface module to handle menus, highscore inputs and display of various screens
+	- fixed limit of maximum rotations (data type was to small to holdthe intended amount, producing an overflow)
+
 19.01.2010:
 	- added dynamic sizes of graphics data
 	- screen mode configurable by #define SCREENRES

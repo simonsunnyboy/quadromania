@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 19.01.2010 : 18:06
+ * last Modified: 21.01.2010 : 18:32
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@
 
 #include "main.h"
 #include "event.h"
+#include "gui.h"
 
 SDL_Surface *screen; /* SDL Surface for video memory */
 
@@ -166,9 +167,6 @@ void MainHandler()
 
 	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
 	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
-	Uint16 i;
-
-	char nstr[10];
 
 	status = UNINITIALIZED;
 	oldstatus = status;
@@ -203,26 +201,7 @@ void MainHandler()
 			if (oldstatus != status) /* recently switched to the title screen? */
 			{
 				/* then we have to redraw it....*/
-				Graphics_DrawBackground(screen, 9);
-				Graphics_DrawOuterFrame(screen);
-				Graphics_DrawTitle(screen);
-
-				Graphics_DrawText(screen, 128, 240, "Start the game");
-				Graphics_DrawText(screen, 128, 272, "Select colors");
-
-				for (i = 0; i < maxrotations + 1; ++i)
-					Graphics_DrawDot(screen, 450 + i * 32, 268, i);
-
-				Graphics_DrawText(screen, 128, 304,
-						"Select amount of initial turns");
-				sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(level));
-				Graphics_DrawText(screen, 480, 304, nstr);
-
-				Graphics_DrawText(screen, 128, 372, "Instructions");
-
-				Graphics_DrawText(screen, 128, 420, "Quit");
-
-				SDL_Flip(screen);
+				GUI_DrawMainmenu(screen, maxrotations + 1, level);
 				if (status == SETUPCHANGED)
 					status = TITLE;
 				oldstatus = status;
@@ -351,25 +330,8 @@ void MainHandler()
 		case WON:
 			if (status != oldstatus)
 			{
-				SDL_Rect dest;
 				oldstatus = status;
-				/* draw some message ...*/
-
-				dest.x = 10;
-				dest.y = 220;
-				dest.w = 620;
-				dest.h = 40;
-				SDL_FillRect(screen, &dest, 0);
-
-				dest.x = 12;
-				dest.y = 222;
-				dest.w = 617;
-				dest.h = 36;
-				SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64,
-						200));
-
-				XCenteredString(screen, 226, "Congratulations! You've won!");
-				SDL_Flip(screen);
+				GUI_DrawWinMessage(screen);
 			}
 
 			if (Event_MouseClicked() == TRUE)
@@ -382,25 +344,8 @@ void MainHandler()
 		case GAMEOVER:
 			if (status != oldstatus)
 			{
-				SDL_Rect dest;
 				oldstatus = status;
-				/* draw some message ...*/
-
-				dest.x = 10;
-				dest.y = 220;
-				dest.w = 620;
-				dest.h = 40;
-				SDL_FillRect(screen, &dest, 0);
-
-				dest.x = 12;
-				dest.y = 222;
-				dest.w = 617;
-				dest.h = 36;
-				SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 200, 64,
-						0));
-				XCenteredString(screen, 226,
-						"GAME OVER! You hit the turn limit!");
-				SDL_Flip(screen);
+				GUI_DrawGameoverMessage(screen);
 			}
 
 			if (Event_MouseClicked() == TRUE)
