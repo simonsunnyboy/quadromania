@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.c - handles drawing the GUI and dialogues to the screen + verifies input on the GUI
- * last Modified: 21.01.2010 : 18:45
+ * last Modified: 23.01.2010 : 12:41
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,25 +40,26 @@ void GUI_DrawMainmenu(SDL_Surface* screen, Uint8 nr_of_dots,
 		Uint8 selected_level)
 {
 	Uint8 i;
+	const Uint16 menu_column = GUI_GetMenuColumnLeft(screen);
 	char nstr[20];
 
 	Graphics_DrawBackground(screen, 9);
 	Graphics_DrawOuterFrame(screen);
 	Graphics_DrawTitle(screen);
 
-	Graphics_DrawText(screen, 128, 240, "Start the game");
-	Graphics_DrawText(screen, 128, 272, "Select colors");
+	Graphics_DrawText(screen, menu_column, 240, "Start the game");
+	Graphics_DrawText(screen, menu_column, 272, "Select colors");
 
 	for (i = 0; i < nr_of_dots; ++i)
-		Graphics_DrawDot(screen, 450 + i * 32, 268, i);
+		Graphics_DrawDot(screen, ((SCREEN_WIDTH * 450)/640) + i * Graphics_GetDotWidth(), 268, i);
 
-	Graphics_DrawText(screen, 128, 304, "Select amount of initial turns");
+	Graphics_DrawText(screen, menu_column, 304, "Select amount of initial turns");
 	sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(selected_level));
-	Graphics_DrawText(screen, 480, 304, nstr);
+	Graphics_DrawText(screen, ((SCREEN_WIDTH * 480)/640), 304, nstr);
 
-	Graphics_DrawText(screen, 128, 372, "Instructions");
+	Graphics_DrawText(screen, menu_column, 372, "Instructions");
 
-	Graphics_DrawText(screen, 128, 420, "Quit");
+	Graphics_DrawText(screen, menu_column, 420, "Quit");
 
 	SDL_Flip(screen);
 	return;
@@ -108,4 +109,16 @@ void GUI_DrawGameoverMessage(SDL_Surface* screen)
 
 	XCenteredString(screen, (SCREEN_HEIGHT / 2) - 18 , "GAME OVER! You hit the turn limit!");
 	SDL_Flip(screen);
+}
+
+/* get the left x coordinate of menu points */
+Uint16 GUI_GetMenuColumnLeft(SDL_Surface* screen)
+{
+	return ((SCREEN_WIDTH * 48)/320);
+}
+
+/* get the right x coordinate of menu points */
+Uint16 GUI_GetMenuColumnRight(SDL_Surface* screen)
+{
+	return (SCREEN_WIDTH - GUI_GetMenuColumnLeft(screen));
 }

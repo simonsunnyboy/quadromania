@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 21.01.2010 : 18:21
+ * last Modified: 23.01.2010 : 12:31
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,9 +118,9 @@ void Quadromania_DrawPlayfield(SDL_Surface *screen)
 	sprintf(txt,"Used turns: %d",turns);
 	Graphics_DrawText(screen,0,0,txt);
 	sprintf(txt,"Limit: %d",limit);
-	Graphics_DrawText(screen,480,0,txt);
+	Graphics_DrawText(screen,((SCREEN_WIDTH *2) / 3),0,txt);
 	sprintf(txt,"%s",VERSION);
-	Graphics_DrawText(screen, 0, 450, txt);
+	Graphics_DrawText(screen, 0, (SCREEN_HEIGHT - Graphics_GetFontHeight()), txt);
 }
 
 /* this function tells you wether you have won or not... */

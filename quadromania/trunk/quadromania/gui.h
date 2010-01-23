@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.h - header file for the GUI handling
- * last Modified: 21.01.2010 : 18:38
+ * last Modified: 23.01.2010 : 12:41
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,5 +32,8 @@
 	void GUI_DrawMainmenu(SDL_Surface*, Uint8, Uint8);
 	void GUI_DrawWinMessage(SDL_Surface*);
 	void GUI_DrawGameoverMessage(SDL_Surface*);
+
+	Uint16 GUI_GetMenuColumnLeft(SDL_Surface*);
+	Uint16 GUI_GetMenuColumnRight(SDL_Surface*);
 
 #endif /* __GUI_H */

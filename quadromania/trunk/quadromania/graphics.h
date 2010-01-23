@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 19.01.2010 : 18:50
+ * last Modified: 23.01.2010 : 12:30
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,4 +55,5 @@
 	void Graphics_CleanUp(void);
 	Uint16 Graphics_GetDotWidth(void);
 	Uint16 Graphics_GetDotHeight(void);
+	Uint16 Graphics_GetFontHeight(void);
 #endif

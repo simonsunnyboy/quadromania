@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 19.01.2010 : 18:50
+ * last Modified: 23.01.2010 : 12:45
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 
 static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright;
 
-static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width, texture_height;
+static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width, texture_height, font_height;
 
 /* texture the complete screen with 1 out of 10 textures... */
 void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
@@ -119,24 +119,24 @@ void Graphics_DrawInstructions(SDL_Surface *screen)
     dest.w=0;
     dest.h=0;
     SDL_BlitSurface(titel,&src,screen,&dest);
-    XCenteredString(screen, 120, "Instructions");
+    XCenteredString(screen, ((SCREEN_HEIGHT * 120)/480), "Instructions");
 
-    Graphics_DrawText(screen,32,150,"Quadromania is a board game.");
-    Graphics_DrawText(screen,32,170,"Your task is to restore the originating board filled with");
-    Graphics_DrawText(screen,32,190,"red stones. The computer will pick a named amount of");
-    Graphics_DrawText(screen,32,210,"3x3 tile sets and will flip the colours of the selected");
-    Graphics_DrawText(screen,32,230,"tiles.");
-    Graphics_DrawText(screen,32,250,"This means a red tile will become green, a green one the");
-    Graphics_DrawText(screen,32,270,"next colour in the amount of colours, red again in the");
-    Graphics_DrawText(screen,32,290,"simplest case.");
-    Graphics_DrawText(screen,32,320,"You select the amount of colours to use and the amount of");
-    Graphics_DrawText(screen,32,340,"initial rotations.");
-    Graphics_DrawText(screen,32,360,"In the running game click on the center point of a 3x3 tile");
-    Graphics_DrawText(screen,32,380,"set to exchange that selected set following the rules above.");
-    Graphics_DrawText(screen,32,400,"Restore the board full of red stones before you reach the");
-    Graphics_DrawText(screen,32,420,"limit of maximum turns.");
+    Graphics_DrawText(screen,dot_width,150,"Quadromania is a board game.");
+    Graphics_DrawText(screen,dot_width,170,"Your task is to restore the originating board filled with");
+    Graphics_DrawText(screen,dot_width,190,"red stones. The computer will pick a named amount of");
+    Graphics_DrawText(screen,dot_width,210,"3x3 tile sets and will flip the colours of the selected");
+    Graphics_DrawText(screen,dot_width,230,"tiles.");
+    Graphics_DrawText(screen,dot_width,250,"This means a red tile will become green, a green one the");
+    Graphics_DrawText(screen,dot_width,270,"next colour in the amount of colours, red again in the");
+    Graphics_DrawText(screen,dot_width,290,"simplest case.");
+    Graphics_DrawText(screen,dot_width,320,"You select the amount of colours to use and the amount of");
+    Graphics_DrawText(screen,dot_width,340,"initial rotations.");
+    Graphics_DrawText(screen,dot_width,360,"In the running game click on the center point of a 3x3 tile");
+    Graphics_DrawText(screen,dot_width,380,"set to exchange that selected set following the rules above.");
+    Graphics_DrawText(screen,dot_width,400,"Restore the board full of red stones before you reach the");
+    Graphics_DrawText(screen,dot_width,420,"limit of maximum turns.");
 
-    Graphics_DrawText(screen,400,460,"Click here to continue!");
+    Graphics_DrawText(screen,((SCREEN_WIDTH * 400) / 640),(SCREEN_HEIGHT - font_height),"Click here to continue!");
     SDL_Flip(screen);
 }
 
@@ -195,6 +195,7 @@ void Graphics_Init()
 	dot_height = (Uint16) (dots->h);
 	texture_width = (Uint16) (textures->w / NR_OF_TEXTURES);
 	texture_height = (Uint16) (textures->h);
+	font_height = (Uint16) (font->h);
 
 	atexit(Graphics_CleanUp);
 }
@@ -225,3 +226,8 @@ Uint16 Graphics_GetDotHeight()
 	return(dot_height);
 }
 
+/* get heigth of the main font */
+Uint16 Graphics_GetFontHeight()
+{
+	return(font_height);
+}
