@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.h - header file for the GUI handling
- * last Modified: 23.01.2010 : 12:41
+ * last Modified: 23.01.2010 : 19:08
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,26 @@
 #ifndef __GUI_H
 #define __GUI_H
 
+	/************
+	 * DEFINES  *
+	 ************/
+
+	#define MAX_NR_OF_MENU_ENTRIES 10
+
+	/***************
+	 * DATA TYPES  *
+	 ***************/
+
+	typedef enum GUI_MenuEntries {
+		MENU_UNDEFINED = 0,
+		MENU_START_GAME = 1,
+		MENU_CHANGE_NR_OF_COLORS = 2,
+		MENU_CHANGE_NR_OF_ROTATIONS = 3,
+		MENU_INSTRUCTIONS = 4,
+		MENU_QUIT = 5
+	} tGUI_MenuEntries;
+
+
 	/**************
 	 * PROTOTYPES *
 	 **************/
@@ -35,5 +55,8 @@
 
 	Uint16 GUI_GetMenuColumnLeft(SDL_Surface*);
 	Uint16 GUI_GetMenuColumnRight(SDL_Surface*);
+
+	void GUI_InitMenuCoordinates(SDL_Surface*);
+	tGUI_MenuEntries GUI_GetClickedMenuEntry(SDL_Surface*);
 
 #endif /* __GUI_H */

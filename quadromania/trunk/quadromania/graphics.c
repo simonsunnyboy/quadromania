@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 23.01.2010 : 12:45
+ * last Modified: 23.01.2010 : 18:23
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,8 @@
 
 static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright;
 
-static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width, texture_height, font_height;
+static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width,
+		texture_height, font_height;
 
 /* texture the complete screen with 1 out of 10 textures... */
 void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
@@ -86,7 +87,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 	src.w = titel->w;
 	src.h = titel->h;
 	dest.x = ((SCREEN_WIDTH / 2) - (titel->w / 2));
-	dest.y = 32;
+	dest.y = dot_height;
 	dest.w = 0;
 	dest.h = 0;
 	SDL_BlitSurface(titel, &src, screen, &dest);
@@ -95,7 +96,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 	src.w = copyright->w;
 	src.h = copyright->h;
 	dest.x = ((SCREEN_WIDTH / 2) - (copyright->w / 2));
-	dest.y = 120;
+	dest.y = ((SCREEN_HEIGHT * 120) / 480);
 	dest.w = 0;
 	dest.h = 0;
 	SDL_BlitSurface(copyright, &src, screen, &dest);
@@ -105,39 +106,52 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 /* draws the instructions screen */
 void Graphics_DrawInstructions(SDL_Surface *screen)
 {
-    SDL_Rect src,dest;
 
-    Graphics_DrawBackground(screen,0);
-    Graphics_DrawOuterFrame(screen);
-    /* draw logo */
-    src.x=0;
-    src.y=0;
-    src.w=titel->w;
-    src.h=titel->h;
-    dest.x=((SCREEN_WIDTH/2)-(titel->w/2));
-    dest.y=32;
-    dest.w=0;
-    dest.h=0;
-    SDL_BlitSurface(titel,&src,screen,&dest);
-    XCenteredString(screen, ((SCREEN_HEIGHT * 120)/480), "Instructions");
+	const char *instructions_text[] =
+	{
+	 "Your task is to restore all stones to red." ,
+	 "You select the amount of colours to use and" ,
+	 "the amount of initial rotations." ,
+	 "The computer will rotate a named amount of" ,
+	 "3x3 tile sets and will flip their colours." ,
+	 "The last possible color will turn red again." ,
+	 "In game click on the center point of a 3x3 tile" ,
+	 "set to exchange the tiles in the order." ,
+	 "Restore the board with limited turns.",
+	 NULL
+	};
+	const Uint16 instruction_y = ((SCREEN_HEIGHT * 120) / 480);
+	Uint16 y;
+	Uint8 i = 0;
+	SDL_Rect src, dest;
 
-    Graphics_DrawText(screen,dot_width,150,"Quadromania is a board game.");
-    Graphics_DrawText(screen,dot_width,170,"Your task is to restore the originating board filled with");
-    Graphics_DrawText(screen,dot_width,190,"red stones. The computer will pick a named amount of");
-    Graphics_DrawText(screen,dot_width,210,"3x3 tile sets and will flip the colours of the selected");
-    Graphics_DrawText(screen,dot_width,230,"tiles.");
-    Graphics_DrawText(screen,dot_width,250,"This means a red tile will become green, a green one the");
-    Graphics_DrawText(screen,dot_width,270,"next colour in the amount of colours, red again in the");
-    Graphics_DrawText(screen,dot_width,290,"simplest case.");
-    Graphics_DrawText(screen,dot_width,320,"You select the amount of colours to use and the amount of");
-    Graphics_DrawText(screen,dot_width,340,"initial rotations.");
-    Graphics_DrawText(screen,dot_width,360,"In the running game click on the center point of a 3x3 tile");
-    Graphics_DrawText(screen,dot_width,380,"set to exchange that selected set following the rules above.");
-    Graphics_DrawText(screen,dot_width,400,"Restore the board full of red stones before you reach the");
-    Graphics_DrawText(screen,dot_width,420,"limit of maximum turns.");
+	Graphics_DrawBackground(screen, 0);
+	Graphics_DrawOuterFrame(screen);
+	/* draw logo */
+	src.x = 0;
+	src.y = 0;
+	src.w = titel->w;
+	src.h = titel->h;
+	dest.x = ((SCREEN_WIDTH / 2) - (titel->w / 2));
+	dest.y = dot_height;
+	dest.w = 0;
+	dest.h = 0;
+	SDL_BlitSurface(titel, &src, screen, &dest);
+	XCenteredString(screen, instruction_y, "Instructions");
+	i = 0;
+	for (y = instruction_y + font_height; y < (SCREEN_HEIGHT - font_height); y
+			= y + font_height)
+	{
+		if (instructions_text[i] == NULL)
+		{
+			break; /* stop drawing instruction text*/
+		}
+		Graphics_DrawText(screen, dot_width, y, (char *) instructions_text[i]);
+		i++;
+	}
 
-    Graphics_DrawText(screen,((SCREEN_WIDTH * 400) / 640),(SCREEN_HEIGHT - font_height),"Click here to continue!");
-    SDL_Flip(screen);
+	Graphics_DrawText(screen,((SCREEN_WIDTH * 380) / 640),(SCREEN_HEIGHT - font_height),"Click here to continue!");
+	SDL_Flip(screen);
 }
 
 /* draw the outer frame... */

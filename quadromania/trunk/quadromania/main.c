@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 21.01.2010 : 18:32
+ * last Modified: 23.01.2010 : 19:16
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 		ok = FALSE;
 #if(HAVE_WINDOWED_MODE == 1)
 		if ((strcmp(argv[i], "-f") == 0) || (strcmp(argv[i], "--fullscreen")
-						== 0))
+				== 0))
 		{
 			/* fullscreen mode requested... */
 			fullscreen = TRUE;
@@ -165,6 +165,8 @@ void MainHandler()
 {
 	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
 
+	tGUI_MenuEntries menu; /* the current selected menu entry */
+
 	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
 	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
 
@@ -173,6 +175,7 @@ void MainHandler()
 	/* the main loop - event and automata driven :) */
 	do
 	{
+		menu = MENU_UNDEFINED; /* safe guard menu selection */
 		/* Event reading and parsing.... */
 		Event_ProcessInput();
 		if (Event_IsESCPressed() == TRUE)
@@ -212,55 +215,44 @@ void MainHandler()
 			{
 				if (Event_GetMouseButton() == 1)
 				{
-					if ((Event_GetMouseX() > 128) && (Event_GetMouseX() < 450))
+					menu = GUI_GetClickedMenuEntry(screen);
+					switch (menu)
 					{
+					case MENU_START_GAME:
 						/* "start a new game" ? */
-						if ((Event_GetMouseY() > 240) && (Event_GetMouseY()
-								< 264))
-						{
-							status = GAME;
-							Quadromania_InitPlayfield(
-									Quadromania_GetRotationsPerLevel(level),
-									maxrotations);
-							Quadromania_DrawPlayfield(screen);
-							SDL_Flip(screen);
-
-						}
-
+						status = GAME;
+						Quadromania_InitPlayfield(
+								Quadromania_GetRotationsPerLevel(level),
+								maxrotations);
+						Quadromania_DrawPlayfield(screen);
+						SDL_Flip(screen);
+						break;
+					case MENU_CHANGE_NR_OF_COLORS:
 						/* "Select Colors" ? */
-						if ((Event_GetMouseY() > 272) && (Event_GetMouseY()
-								< 296))
-						{
-							status = SETUPCHANGED;
-							++maxrotations;
-							if (maxrotations > 4)
-								maxrotations = 1;
-						}
+						status = SETUPCHANGED;
+						++maxrotations;
+						if (maxrotations > 4)
+							maxrotations = 1;
+						break;
 
+					case MENU_CHANGE_NR_OF_ROTATIONS:
 						/* "Select Colors" ? */
-						if ((Event_GetMouseY() > 304) && (Event_GetMouseY()
-								< 328))
-						{
-							status = SETUPCHANGED;
-							++level;
-							if (level > 10)
-								level = 1;
-						}
-
+						status = SETUPCHANGED;
+						++level;
+						if (level > 10)
+							level = 1;
+						break;
+					case MENU_INSTRUCTIONS:
 						/* "Instructions" ? */
-						if ((Event_GetMouseY() > 372) && (Event_GetMouseY()
-								< 396))
-						{
-							status = INSTRUCTIONS;
-						}
-
-						/* Quit? */
-						if ((Event_GetMouseY() > 420) && (Event_GetMouseY()
-								< 444))
-						{
-							status = QUIT;
-						}
-					}
+						status = INSTRUCTIONS;
+						break;
+					case MENU_QUIT:
+						status = QUIT;
+						break;
+					default:
+						/* undefined menu entry */
+						break;
+					};
 				}
 				Event_DebounceMouse();
 			}
@@ -276,7 +268,8 @@ void MainHandler()
 			}
 			if (Event_MouseClicked() == TRUE)
 			{
-				if ((Event_GetMouseButton() == 1) && (Event_GetMouseY() > 460))
+				if ((Event_GetMouseButton() == 1) && (Event_GetMouseY()
+						> (SCREEN_HEIGHT - Graphics_GetFontHeight())))
 				{
 					Event_DebounceMouse();
 					status = TITLE;

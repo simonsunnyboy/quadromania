@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 21.01.2010 : 18:31
+# last Modified: 23.01.2010 : 18:38
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ gui.o: gui.c gui.h graphics.o
 
 random.o: random.c random.h
 
-quadromania.o: quadromania.c quadromania.h boolean.h
+quadromania.o: quadromania.c quadromania.h version.h boolean.h
 
 event.o: event.c event.h boolean.h
 
