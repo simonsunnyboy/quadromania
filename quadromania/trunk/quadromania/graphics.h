@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 23.01.2010 : 12:30
+ * last Modified: 24.01.2010 : 18:32
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 	#define __GRAPHICS_H
 
     #include "version.h"
+	#include "sysconfig.h"
 	#include <SDL/SDL.h>
 
 	/************
@@ -34,6 +35,12 @@
 
 	#define NR_OF_TEXTURES 	10
 	#define NR_OF_DOTS     	5
+
+#if(SCREENRES == _LOW)
+	#define GFXPREFIX "lowres/"
+#else
+	#define GFXPREFIX ""
+#endif
 
 	/**********
 	 * MACROS *

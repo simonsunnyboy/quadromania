@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 23.01.2010 : 19:16
+ * last Modified: 24.01.2010 : 18:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,6 +149,11 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 
 	/* set window title.. */
 	SDL_WM_SetCaption(VERSION, NULL);
+
+#if(HAVE_MOUSE_POINTER == 0)
+	/* disable mouse pointer if configured */
+	SDL_ShowCursor(SDL_DISABLE);
+#endif
 
 	/* initialize random number generator... */
 	Random_InitSeed();

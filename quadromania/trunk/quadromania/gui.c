@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.c - handles drawing the GUI and dialogues to the screen + verifies input on the GUI
- * last Modified: 23.01.2010 : 19:19
+ * last Modified: 24.01.2010 : 18:23
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ void GUI_DrawMainmenu(SDL_Surface* screen, Uint8 nr_of_dots,
 
 	Graphics_DrawText(screen, menu_column,
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS],
-			"Select amount of initial turns");
+			"Select initial turns");
 	sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(selected_level));
 	Graphics_DrawText(screen, ((SCREEN_WIDTH * 480) / 640),
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS], nstr);
@@ -95,7 +95,7 @@ void GUI_DrawWinMessage(SDL_Surface* screen)
 	base.x = (SCREEN_WIDTH / 64);
 	base.y = (SCREEN_HEIGHT / 2) - 20;
 	base.w = (SCREEN_WIDTH - 2 * base.x);
-	base.h = 40;
+	base.h = Graphics_GetFontHeight() + factor * 2;
 	SDL_FillRect(screen, &base, 0);
 
 	dest.x = base.x + factor;
@@ -104,7 +104,7 @@ void GUI_DrawWinMessage(SDL_Surface* screen)
 	dest.h = base.h - 2 * factor;
 	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64, 200));
 
-	XCenteredString(screen, (SCREEN_HEIGHT / 2) - 18,
+	XCenteredString(screen, dest.y + factor,
 			"Congratulations! You've won!");
 	SDL_Flip(screen);
 	return;
@@ -120,7 +120,7 @@ void GUI_DrawGameoverMessage(SDL_Surface* screen)
 	base.x = (SCREEN_WIDTH / 64);
 	base.y = (SCREEN_HEIGHT / 2) - 20;
 	base.w = (SCREEN_WIDTH - 2 * base.x);
-	base.h = 40;
+	base.h = Graphics_GetFontHeight() + factor * 2;
 	SDL_FillRect(screen, &base, 0);
 
 	dest.x = base.x + factor;
@@ -129,7 +129,7 @@ void GUI_DrawGameoverMessage(SDL_Surface* screen)
 	dest.h = base.h - 2 * factor;
 	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 200, 64, 0));
 
-	XCenteredString(screen, (SCREEN_HEIGHT / 2) - 18,
+	XCenteredString(screen, dest.y + factor,
 			"GAME OVER! You hit the turn limit!");
 	SDL_Flip(screen);
 	return;

@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 23.01.2010 : 18:23
+ * last Modified: 24.01.2010 : 18:35
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,6 +106,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 /* draws the instructions screen */
 void Graphics_DrawInstructions(SDL_Surface *screen)
 {
+	const char *continue_msg = "Click here to continue!";
 
 	const char *instructions_text[] =
 	{
@@ -150,7 +151,7 @@ void Graphics_DrawInstructions(SDL_Surface *screen)
 		i++;
 	}
 
-	Graphics_DrawText(screen,((SCREEN_WIDTH * 380) / 640),(SCREEN_HEIGHT - font_height),"Click here to continue!");
+	Graphics_DrawText(screen,(SCREEN_WIDTH - TextWidth((char *)continue_msg)),(SCREEN_HEIGHT - font_height),(char *)continue_msg);
 	SDL_Flip(screen);
 }
 
@@ -179,13 +180,38 @@ void Graphics_DrawText(SDL_Surface *screen, Uint16 x, Uint16 y, char *text)
 /* to be able to use the graphics module, initialize it first... */
 void Graphics_Init()
 {
-	/* FIXME: implement error handlers...*/
-	textures = IMG_Load("data/texture.png");
-	frame = IMG_Load("data/frame.png");
-	dots = IMG_Load("data/dots.png");
-	font = IMG_Load("data/font.png");
-	titel = IMG_Load("data/titel.png");
-	copyright = IMG_Load("data/copyright.png");
+	char filename[50];
+
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "texture.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	textures = IMG_Load(filename);
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "frame.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	frame = IMG_Load(filename);
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "dots.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	dots = IMG_Load(filename);
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "font.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	font = IMG_Load(filename);
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "titel.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	titel = IMG_Load(filename);
+	sprintf ( filename, "data/%s%s", GFXPREFIX, "copyright.png");
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	copyright = IMG_Load(filename);
 
 #ifdef _DEBUG
 	fprintf(stderr,"images loaded....\n");
