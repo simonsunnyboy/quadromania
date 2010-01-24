@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile.wiz - Makefile for building quadromania for a GP2X Wiz target 
-# last Modified: 24.01.2010 : 18:21
+# last Modified: 24.01.2010 : 18:45
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #
 
 # locations of the GPX2 Wiz toolchain
-TOOLCHAINDIR = /opt/arm-openwiz-linux-gnu/bin/
+TOOLCHAINDIR = /opt/arm-openwiz-linux-gnu
 
 # sdl-config of toolchain 
 SDL_CONFIG = $(TOOLCHAINDIR)/arm-openwiz-linux-gnu/sys-root/usr/bin/sdl-config
@@ -37,7 +37,7 @@ SDL_LIB=`$(SDL_CONFIG) --libs`
 LIBS = -lSDL_image -lpng -lz
 
 # the compiler to use - please use the GNU C Compiler if possible
-CC = $(TOOLCHAINDIR)/arm-openwiz-linux-gnu-gcc
+CC = $(TOOLCHAINDIR)/bin/arm-openwiz-linux-gnu-gcc
 
 # object files needed to link the executable
 OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o
@@ -47,7 +47,7 @@ EXECUTABLE = quadromania.gpe
 all: quadromania
 
 quadromania: $(OBJS)
-	$(CC) $(CFLAGS) -o $(EXECUTABLE).gpe $(OBJS) $(SDL_LIB) $(LIBS)
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJS) $(SDL_LIB) $(LIBS)
 
 main.o: main.c main.h version.h event.h gui.h
 
