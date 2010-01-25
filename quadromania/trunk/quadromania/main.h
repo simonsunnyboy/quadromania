@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.h - declarations for the main module
- * last Modified: 19.01.2010 : 18:32
+ * last Modified: 25.01.2010 : 17:56
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.h - symbolic constants, data types and function prototypes for event handling
- * last Modified: 15.11.2009 : 17:44
+ * last Modified: 25.01.2010 : 17:56
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

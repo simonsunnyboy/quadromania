@@ -1,6 +1,6 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.h - header file for the game logic module
  * last Modified: 12.11.2009 : 19:16

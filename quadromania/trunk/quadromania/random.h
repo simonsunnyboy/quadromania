@@ -1,6 +1,6 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: random.h - header files for the random number generator
  * last Modified: 11.11.2009 : 18:51

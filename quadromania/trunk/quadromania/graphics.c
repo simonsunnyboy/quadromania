@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 24.01.2010 : 18:35
+ * last Modified: 25.01.2010 : 17:47
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,12 @@
 #include <SDL/SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "graphics.h"
 #include "SFont.h"
 
-static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright;
+static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright ,*window_icon;
 
 static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width,
 		texture_height, font_height;
@@ -180,38 +181,12 @@ void Graphics_DrawText(SDL_Surface *screen, Uint16 x, Uint16 y, char *text)
 /* to be able to use the graphics module, initialize it first... */
 void Graphics_Init()
 {
-	char filename[50];
-
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "texture.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	textures = IMG_Load(filename);
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "frame.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	frame = IMG_Load(filename);
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "dots.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	dots = IMG_Load(filename);
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "font.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	font = IMG_Load(filename);
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "titel.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	titel = IMG_Load(filename);
-	sprintf ( filename, "data/%s%s", GFXPREFIX, "copyright.png");
-#ifdef _DEBUG
-	fprintf(stderr,"%s\n", filename);
-#endif
-	copyright = IMG_Load(filename);
+	textures  = Graphics_LoadGraphicsResource("texture.png");
+	frame     = Graphics_LoadGraphicsResource("frame.png");
+	dots      = Graphics_LoadGraphicsResource("dots.png");
+	font      = Graphics_LoadGraphicsResource("font.png");
+	titel     = Graphics_LoadGraphicsResource("titel.png");
+	copyright = Graphics_LoadGraphicsResource("copyright.png");
 
 #ifdef _DEBUG
 	fprintf(stderr,"images loaded....\n");
@@ -247,6 +222,9 @@ void Graphics_CleanUp()
 	SDL_FreeSurface(frame);
 	SDL_FreeSurface(dots);
 	SDL_FreeSurface(font);
+	SDL_FreeSurface(titel);
+	SDL_FreeSurface(copyright);
+	SDL_FreeSurface(window_icon);
 
 #ifdef _DEBUG
 	fprintf(stderr,"image surfaces successfully freed....\n");
@@ -270,4 +248,29 @@ Uint16 Graphics_GetDotHeight()
 Uint16 Graphics_GetFontHeight()
 {
 	return(font_height);
+}
+
+/* load a graphics ressource from disk or flash */
+SDL_Surface* Graphics_LoadGraphicsResource(char* inputfilename)
+{
+	char filename[50]; /* temporary filename buffer */
+	if(strcmp("*ICON*", inputfilename) == 0)
+	{
+		sprintf ( filename, "data/icons/quadromania32.png"); /* construct filename */
+	}
+	else
+	{
+		sprintf ( filename, "data/%s%s", GFXPREFIX, inputfilename); /* construct filename */
+	}
+#ifdef _DEBUG
+	fprintf(stderr,"%s\n", filename);
+#endif
+	return(IMG_Load(filename));
+}
+
+/* load and set the window icon */
+void Graphics_SetWindowIcon()
+{
+	window_icon = Graphics_LoadGraphicsResource("*ICON*");
+	SDL_WM_SetIcon(window_icon, NULL);
 }

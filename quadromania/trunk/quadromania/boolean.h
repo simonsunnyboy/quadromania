@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: boolean.h - symbolic constants for boolean values
- * last Modified: 10.11.2009 : 19:21
+ * last Modified: 25.01.2010 : 17:57
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

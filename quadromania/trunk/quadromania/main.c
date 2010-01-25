@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 24.01.2010 : 18:12
+ * last Modified: 25.01.2010 : 17:56
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "%s\n\n", VERSION);
 			fprintf(
 					stderr,
-					"(c) 2002/2003/2009 by Matthias Arndt <marndt@asmsoftware.de>\na game by ASM Software http://www.asmsoftware.de/\nThe GNU General Public License applies. See the file COPYING for details.\n");
+					"(c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de>\na game by ASM Software http://www.asmsoftware.de/\nThe GNU General Public License applies. See the file COPYING for details.\n");
 			fprintf(stderr, "Compiled on %s at %s\n\n", __DATE__, __TIME__);
 			return (1);
 		}
@@ -123,6 +123,8 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	}
 	/* make sure to shutdown SDL at program end... */
 	atexit(SDL_Quit);
+
+	Graphics_SetWindowIcon(); /* set window icon */
 
 	/* Set an appropriate 16-bit video mode. */
 #if(SCREENRES == _HIGH)

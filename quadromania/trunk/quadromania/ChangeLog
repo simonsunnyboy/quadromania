@@ -1,6 +1,16 @@
+25.01.2010:
+  - added support for window icon
+  - moved loading of graphics resources into a subfunction Graphics_LoadGraphicsResource()
+  - FIXED: missing SDL_FreeSurface calls in Graphics_CleanUp()
+  - slight update of INSTALL and README documentation
+  - updated copyright year in all source files 
+
+24.01.2010:
+	- added support for GP2X (clean up of Graphics module, disable mouse pointer if configured)
+
 21.01.2010:
 	- added a user interface module to handle menus, highscore inputs and display of various screens
-	- fixed limit of maximum rotations (data type was to small to holdthe intended amount, producing an overflow)
+	- fixed limit of maximum rotations (data type was to small to hold the intended amount, producing an overflow)
 
 19.01.2010:
 	- added dynamic sizes of graphics data
