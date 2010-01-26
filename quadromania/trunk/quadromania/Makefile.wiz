@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile.wiz - Makefile for building quadromania for a GP2X Wiz target 
-# last Modified: 24.01.2010 : 18:45
+# last Modified: 26.01.2010 : 17:46
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,9 +44,9 @@ OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o
 # name of executable
 EXECUTABLE = quadromania.gpe
 	
-all: quadromania
+all: $(EXECUTABLE)
 
-quadromania: $(OBJS)
+$(EXECUTABLE): $(OBJS)
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJS) $(SDL_LIB) $(LIBS)
 
 main.o: main.c main.h version.h event.h gui.h
@@ -69,5 +69,20 @@ SFont.o: SFont.c SFont.h
 
 # cleanup
 clean:
-	rm -f *.o quadromania
+	rm -f *.o $(EXECUTABLE) quadromania-wiz.zip
+
+# create a distribution zip for the GP2X Wiz
+dist: $(EXECUTABLE)
+	mkdir game/
+	mkdir game/quadromania/
+	mkdir game/quadromania/data/
+	mkdir game/quadromania/data/lowres/
+	mkdir game/quadromania/data/icons/
+	cp data/lowres/*.png game/quadromania/data/lowres/
+	cp data/icons/*.png game/quadromania/data/icons/
+	cp README ChangeLog AUTHORS COPYING game/quadromania/
+	cp $(EXECUTABLE) game/quadromania/
+	cp GP2X_Wiz/quadromania.ini game/
+	cp GP2X_Wiz/quadromania-wrapper.gpe game/quadromania/
+	zip -rm quadromania-wiz.zip game/
 
