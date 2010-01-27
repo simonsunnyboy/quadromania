@@ -1,3 +1,9 @@
+27.01.2010:
+	- added 24x24 pixel icon for GP2X Wiz
+	- added GP2X Wiz specific README
+	- added TODO list
+	- updated the INSTALL file
+	
 26.01.2010:
 	- added infrastructure for future Wiz release as ZIP file which can be directly unzipped to NAND or SD-Card
 

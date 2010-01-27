@@ -83,6 +83,7 @@ dist: $(EXECUTABLE)
 	cp README ChangeLog AUTHORS COPYING game/quadromania/
 	cp $(EXECUTABLE) game/quadromania/
 	cp GP2X_Wiz/quadromania.ini game/
+	cp GP2X_Wiz/README.wiz game/quadromania
 	cp GP2X_Wiz/quadromania-wrapper.gpe game/quadromania/
 	zip -rm quadromania-wiz.zip game/
 

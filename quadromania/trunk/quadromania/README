@@ -6,3 +6,12 @@ a game by ASM Software (http://www.asmsoftware.de/)
 The GNU General Public License applies. See the file COPYING for details
 or visit http://www.gnu.org/ for more information.
 
+Quadromania is a board game. A board of coloured tiles is mixed up by
+the computer and the player's task is to restore the original board.
+
+Supported target platforms:
+	* Linux/Windows 32 with libSDL
+	* GP2X Wiz
+
+For installation notes, see the file INSTALL or the port specific
+README.
