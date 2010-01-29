@@ -20,10 +20,17 @@ and a suitable .ini file.
 After unzipping to the SD Card, quadromania should show up on your Wiz menu
 as usual. Tap the icon to launch the game.
 
+Firmware versions
+=================
+
+Sofar the GP2X Wiz port has only been tested with the original firmware as
+delivered in April 2009. If any compatibility issues will occur, this will
+be noted here.
+
 Known Bugs
 ==========
 
-1. Tearing - this is due the buggy SDL lib currentyl shipping with the Wiz
+1. Tearing - this is due the buggy SDL lib currently shipping with the Wiz
              You may cure this by copy a fixed libSDL-1.2.0.so to the
              game directory.
 
