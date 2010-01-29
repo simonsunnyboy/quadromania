@@ -1,0 +1,45 @@
+quadromania
+
+(c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de>
+a game by ASM Software (http://www.asmsoftware.de/)
+
+The GNU General Public License applies. See the file COPYING for details
+or visit http://www.gnu.org/ for more information.
+
+This file contains release notes specific to the port to the GP2X Wiz.
+
+Use touchscreen and stylus like the mouse on a PC.
+
+Installation
+============
+
+To install the game, simply unzip the binary distribution for your GP2X Wiz
+to your SD Card root directory. The ZIP includes the necessary folder structure
+and a suitable .ini file.
+
+After unzipping to the SD Card, quadromania should show up on your Wiz menu
+as usual. Tap the icon to launch the game.
+
+Firmware versions
+=================
+
+Sofar the GP2X Wiz port has only been tested with the original firmware as
+delivered in April 2009. If any compatibility issues will occur, this will
+be noted here.
+
+Known Bugs
+==========
+
+1. Tearing - this is due the buggy SDL lib currently shipping with the Wiz
+             You may cure this by copy a fixed libSDL-1.2.0.so to the
+             game directory.
+
+2. Stylus input - this is as accurate as your firmware and calibration.
+                  With a proper calibrated display, stylus clicks are
+                  accurate within limits.
+
+3. There is currently no QUIT option via keypresses.
+
+4. The game cannot be interrupted on the Wiz yet.
+
+5. The instruction screen is not 100% adapted to the small display yet.
