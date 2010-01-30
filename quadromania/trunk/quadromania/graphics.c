@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 25.01.2010 : 17:47
+ * last Modified: 30.01.2010 : 18:36
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,13 +32,15 @@
 #include "graphics.h"
 #include "SFont.h"
 
+static SDL_Surface *screen;
+
 static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright ,*window_icon;
 
 static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width,
 		texture_height, font_height;
 
 /* texture the complete screen with 1 out of 10 textures... */
-void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
+void Graphics_DrawBackground(Uint8 texture)
 {
 	Uint8 i, j;
 	SDL_Rect src, dest;
@@ -63,7 +65,7 @@ void Graphics_DrawBackground(SDL_Surface *screen, Uint8 texture)
 }
 
 /* draw one of the coloured dots for the playfield... */
-void Graphics_DrawDot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
+void Graphics_DrawDot(Uint16 x, Uint16 y, Uint8 number)
 {
 	SDL_Rect src, dest;
 
@@ -79,7 +81,7 @@ void Graphics_DrawDot(SDL_Surface *screen, Uint16 x, Uint16 y, Uint8 number)
 }
 
 /* draw the titel string */
-void Graphics_DrawTitle(SDL_Surface *screen)
+void Graphics_DrawTitle()
 {
 	SDL_Rect src, dest;
 
@@ -105,7 +107,7 @@ void Graphics_DrawTitle(SDL_Surface *screen)
 }
 
 /* draws the instructions screen */
-void Graphics_DrawInstructions(SDL_Surface *screen)
+void Graphics_DrawInstructions()
 {
 	const char *continue_msg = "Click here to continue!";
 
@@ -127,8 +129,8 @@ void Graphics_DrawInstructions(SDL_Surface *screen)
 	Uint8 i = 0;
 	SDL_Rect src, dest;
 
-	Graphics_DrawBackground(screen, 0);
-	Graphics_DrawOuterFrame(screen);
+	Graphics_DrawBackground(0);
+	Graphics_DrawOuterFrame();
 	/* draw logo */
 	src.x = 0;
 	src.y = 0;
@@ -148,16 +150,16 @@ void Graphics_DrawInstructions(SDL_Surface *screen)
 		{
 			break; /* stop drawing instruction text*/
 		}
-		Graphics_DrawText(screen, dot_width, y, (char *) instructions_text[i]);
+		Graphics_DrawText(dot_width, y, (char *) instructions_text[i]);
 		i++;
 	}
 
-	Graphics_DrawText(screen,(SCREEN_WIDTH - TextWidth((char *)continue_msg)),(SCREEN_HEIGHT - font_height),(char *)continue_msg);
-	SDL_Flip(screen);
+	Graphics_DrawText((SCREEN_WIDTH - TextWidth((char *)continue_msg)),(SCREEN_HEIGHT - font_height),(char *)continue_msg);
+	Graphics_UpdateScreen();
 }
 
 /* draw the outer frame... */
-void Graphics_DrawOuterFrame(SDL_Surface *screen)
+void Graphics_DrawOuterFrame()
 {
 	SDL_Rect src, dest;
 
@@ -173,14 +175,108 @@ void Graphics_DrawOuterFrame(SDL_Surface *screen)
 }
 
 /* write some text with the default font on the screen... */
-void Graphics_DrawText(SDL_Surface *screen, Uint16 x, Uint16 y, char *text)
+void Graphics_DrawText(Uint16 x, Uint16 y, char *text)
 {
 	PutString(screen, x, y, text);
 }
 
-/* to be able to use the graphics module, initialize it first... */
-void Graphics_Init()
+/* show the "you have won!" message */
+void Graphics_DrawWinMessage()
 {
+	const Uint16 factor = (SCREEN_WIDTH / 320);
+	SDL_Rect base, dest;
+	/* draw some message ...*/
+
+	base.x = (SCREEN_WIDTH / 64);
+	base.y = (SCREEN_HEIGHT / 2) - 20;
+	base.w = (SCREEN_WIDTH - 2 * base.x);
+	base.h = Graphics_GetFontHeight() + factor * 2;
+	SDL_FillRect(screen, &base, 0);
+
+	dest.x = base.x + factor;
+	dest.y = base.y + factor;
+	dest.w = base.w - 2 * factor;
+	dest.h = base.h - 2 * factor;
+	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64, 200));
+
+	XCenteredString(screen,dest.y + factor,
+			"Congratulations! You've won!");
+	Graphics_UpdateScreen();
+	return;
+}
+
+/* show the "you have lost" message */
+void Graphics_DrawGameoverMessage()
+{
+	const Uint16 factor = (SCREEN_WIDTH / 320);
+	SDL_Rect base, dest;
+	/* draw some message ...*/
+
+	base.x = (SCREEN_WIDTH / 64);
+	base.y = (SCREEN_HEIGHT / 2) - 20;
+	base.w = (SCREEN_WIDTH - 2 * base.x);
+	base.h = Graphics_GetFontHeight() + factor * 2;
+	SDL_FillRect(screen, &base, 0);
+
+	dest.x = base.x + factor;
+	dest.y = base.y + factor;
+	dest.w = base.w - 2 * factor;
+	dest.h = base.h - 2 * factor;
+	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 200, 64, 0));
+
+	XCenteredString(screen, dest.y + factor,
+			"GAME OVER! You hit the turn limit!");
+	SDL_Flip(screen);
+	return;
+}
+
+/* to be able to use the graphics module, initialize it first... */
+BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
+{
+	/* initialize SDL...  */
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		fprintf(stderr, "%s\n\nUnable to initialize SDL: %s\n", VERSION,
+				SDL_GetError());
+		return (FALSE);
+	}
+	/* make sure to shutdown SDL at program end... */
+	atexit(SDL_Quit);
+
+	Graphics_SetWindowIcon(); /* set window icon */
+
+	/* Set an appropriate 16-bit video mode. */
+#if(SCREENRES == _HIGH)
+	if ((screen = SDL_SetVideoMode(640, 480, 16,
+			((set_fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SDL_HWSURFACE
+					| SDL_DOUBLEBUF)) == NULL)
+	{
+		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
+				VERSION, SDL_GetError());
+		return (FALSE);
+	}
+#elif(SCREENRES == _LOW)
+	if ((screen = SDL_SetVideoMode(320, 240, 16, ((set_fullscreen == TRUE) ? SDL_FULLSCREEN
+									: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
+	{
+		fprintf(stderr, "%s\n\nUnable to set 320x240x16 video mode: %s\n",
+				VERSION, SDL_GetError());
+		return (FALSE);
+	}
+#else
+#error screen resolution is not properly defined
+	return(FALSE);
+#endif
+
+	/* set window title.. */
+	SDL_WM_SetCaption(VERSION, NULL);
+
+#if(HAVE_MOUSE_POINTER == 0)
+	/* disable mouse pointer if configured */
+	SDL_ShowCursor(SDL_DISABLE);
+#endif
+
+	/* init graphic data for use by the game */
 	textures  = Graphics_LoadGraphicsResource("texture.png");
 	frame     = Graphics_LoadGraphicsResource("frame.png");
 	dots      = Graphics_LoadGraphicsResource("dots.png");
@@ -213,6 +309,8 @@ void Graphics_Init()
 	font_height = (Uint16) (font->h);
 
 	atexit(Graphics_CleanUp);
+
+	return(TRUE);
 }
 
 /* at exit clean up the graphics module... */
@@ -244,6 +342,18 @@ Uint16 Graphics_GetDotHeight()
 	return(dot_height);
 }
 
+/* get width of the screen */
+Uint16 Graphics_GetScreenWidth()
+{
+	return(screen->w);
+}
+
+/* get heigth of the screen  */
+Uint16 Graphics_GetScreenHeight()
+{
+	return(screen->h);
+}
+
 /* get heigth of the main font */
 Uint16 Graphics_GetFontHeight()
 {
@@ -273,4 +383,10 @@ void Graphics_SetWindowIcon()
 {
 	window_icon = Graphics_LoadGraphicsResource("*ICON*");
 	SDL_WM_SetIcon(window_icon, NULL);
+}
+
+/* make all changes to the screen visible */
+void Graphics_UpdateScreen()
+{
+	SDL_Flip(screen);
 }

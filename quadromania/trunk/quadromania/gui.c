@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.c - handles drawing the GUI and dialogues to the screen + verifies input on the GUI
- * last Modified: 24.01.2010 : 18:23
+ * last Modified: 30.01.2010 : 18:38
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,112 +43,61 @@ Uint16 GUI_MenuPosition[MAX_NR_OF_MENU_ENTRIES];
  **************************************/
 
 /* draw the mainmenu with all screen elements like logos, decals and game configuration on screen */
-void GUI_DrawMainmenu(SDL_Surface* screen, Uint8 nr_of_dots,
-		Uint8 selected_level)
+void GUI_DrawMainmenu( Uint8 nr_of_dots, Uint8 selected_level)
 {
 	Uint8 i;
-	const Uint16 menu_column = GUI_GetMenuColumnLeft(screen);
+	const Uint16 menu_column = GUI_GetMenuColumnLeft();
 	char nstr[20];
 
 	if (GUI_MenuPosition[MENU_START_GAME] == 0)
 	{
-		GUI_InitMenuCoordinates(screen);
+		GUI_InitMenuCoordinates();
 	}
 
-	Graphics_DrawBackground(screen, 9);
-	Graphics_DrawOuterFrame(screen);
-	Graphics_DrawTitle(screen);
+	Graphics_DrawBackground(9);
+	Graphics_DrawOuterFrame();
+	Graphics_DrawTitle();
 
-	Graphics_DrawText(screen, menu_column, GUI_MenuPosition[MENU_START_GAME],
+	Graphics_DrawText(menu_column, GUI_MenuPosition[MENU_START_GAME],
 			"Start the game");
-	Graphics_DrawText(screen, menu_column,
+	Graphics_DrawText(menu_column,
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_COLORS], "Select colors");
 
 	for (i = 0; i < nr_of_dots; ++i)
-		Graphics_DrawDot(screen, ((SCREEN_WIDTH * 450) / 640) + i
+		Graphics_DrawDot(((SCREEN_WIDTH * 450) / 640) + i
 				* Graphics_GetDotWidth(),
 				GUI_MenuPosition[MENU_CHANGE_NR_OF_COLORS], i);
 
-	Graphics_DrawText(screen, menu_column,
+	Graphics_DrawText(menu_column,
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS],
 			"Select initial turns");
 	sprintf(nstr, "%d", Quadromania_GetRotationsPerLevel(selected_level));
-	Graphics_DrawText(screen, ((SCREEN_WIDTH * 480) / 640),
+	Graphics_DrawText( ((SCREEN_WIDTH * 480) / 640),
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS], nstr);
 
-	Graphics_DrawText(screen, menu_column, GUI_MenuPosition[MENU_INSTRUCTIONS],
+	Graphics_DrawText(menu_column, GUI_MenuPosition[MENU_INSTRUCTIONS],
 			"Instructions");
 
-	Graphics_DrawText(screen, menu_column, GUI_MenuPosition[MENU_QUIT], "Quit");
+	Graphics_DrawText(menu_column, GUI_MenuPosition[MENU_QUIT], "Quit");
 
-	SDL_Flip(screen);
-	return;
-}
-
-/* show the "you have won!" message */
-void GUI_DrawWinMessage(SDL_Surface* screen)
-{
-	const Uint16 factor = (SCREEN_WIDTH / 320);
-	SDL_Rect base, dest;
-	/* draw some message ...*/
-
-	base.x = (SCREEN_WIDTH / 64);
-	base.y = (SCREEN_HEIGHT / 2) - 20;
-	base.w = (SCREEN_WIDTH - 2 * base.x);
-	base.h = Graphics_GetFontHeight() + factor * 2;
-	SDL_FillRect(screen, &base, 0);
-
-	dest.x = base.x + factor;
-	dest.y = base.y + factor;
-	dest.w = base.w - 2 * factor;
-	dest.h = base.h - 2 * factor;
-	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 0, 64, 200));
-
-	XCenteredString(screen, dest.y + factor,
-			"Congratulations! You've won!");
-	SDL_Flip(screen);
-	return;
-}
-
-/* show the "you have lost" message */
-void GUI_DrawGameoverMessage(SDL_Surface* screen)
-{
-	const Uint16 factor = (SCREEN_WIDTH / 320);
-	SDL_Rect base, dest;
-	/* draw some message ...*/
-
-	base.x = (SCREEN_WIDTH / 64);
-	base.y = (SCREEN_HEIGHT / 2) - 20;
-	base.w = (SCREEN_WIDTH - 2 * base.x);
-	base.h = Graphics_GetFontHeight() + factor * 2;
-	SDL_FillRect(screen, &base, 0);
-
-	dest.x = base.x + factor;
-	dest.y = base.y + factor;
-	dest.w = base.w - 2 * factor;
-	dest.h = base.h - 2 * factor;
-	SDL_FillRect(screen, &dest, SDL_MapRGB(screen->format, 200, 64, 0));
-
-	XCenteredString(screen, dest.y + factor,
-			"GAME OVER! You hit the turn limit!");
-	SDL_Flip(screen);
+	Graphics_UpdateScreen();
 	return;
 }
 
 /* get the left x coordinate of menu points */
-Uint16 GUI_GetMenuColumnLeft(SDL_Surface* screen)
+Uint16 GUI_GetMenuColumnLeft()
 {
 	return ((SCREEN_WIDTH * 48) / 320);
 }
 
 /* get the right x coordinate of menu points */
-Uint16 GUI_GetMenuColumnRight(SDL_Surface* screen)
+Uint16 GUI_GetMenuColumnRight()
 {
-	return (SCREEN_WIDTH - GUI_GetMenuColumnLeft(screen));
+	return (SCREEN_WIDTH - GUI_GetMenuColumnLeft());
 }
 
 /* initialize position list of menu entries */
-void GUI_InitMenuCoordinates(SDL_Surface* screen)
+void GUI_InitMenuCoordinates()
 {
 	const Uint16 start_pos = ((SCREEN_HEIGHT * 240) / 480);
 	const Uint16 offset_per_line = Graphics_GetFontHeight() + (SCREEN_HEIGHT
@@ -164,12 +113,12 @@ void GUI_InitMenuCoordinates(SDL_Surface* screen)
 }
 
 /* determines the currently pointed to mainmenu entry via the Event interface */
-tGUI_MenuEntries GUI_GetClickedMenuEntry(SDL_Surface* screen)
+tGUI_MenuEntries GUI_GetClickedMenuEntry()
 {
 	const Uint16 font_height = Graphics_GetFontHeight();
 	const Uint16 mouse_y = Event_GetMouseY();
 
-	if ((Event_GetMouseX() > GUI_GetMenuColumnLeft(screen)) && (Event_GetMouseX() < GUI_GetMenuColumnRight(screen)))
+	if ((Event_GetMouseX() > GUI_GetMenuColumnLeft()) && (Event_GetMouseX() < GUI_GetMenuColumnRight()))
 	{
 		if ((mouse_y > GUI_MenuPosition[MENU_START_GAME]) && (mouse_y
 				< GUI_MenuPosition[MENU_START_GAME] + font_height))

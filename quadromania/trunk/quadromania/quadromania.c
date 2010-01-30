@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 23.01.2010 : 12:31
+ * last Modified: 30.01.2010 : 18:33
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,25 +102,25 @@ void Quadromania_Rotate(Uint32 x, Uint32 y)
 }
 
 /* this method/procedure draws the complete playfield */
-void Quadromania_DrawPlayfield(SDL_Surface *screen)
+void Quadromania_DrawPlayfield()
 {
 	Uint16 i, j;
 	char txt[512];
 
-	Graphics_DrawBackground(screen, backgroundart);
-	Graphics_DrawOuterFrame(screen);
+	Graphics_DrawBackground(backgroundart);
+	Graphics_DrawOuterFrame();
 
 	for (i = 0; i < 18; i++)
 		for (j = 0; j < 13; j++)
-			Graphics_DrawDot(screen, i * Graphics_GetDotWidth() + Graphics_GetDotWidth(), j * Graphics_GetDotHeight() + Graphics_GetDotHeight(), playfield[i][j]);
+			Graphics_DrawDot(i * Graphics_GetDotWidth() + Graphics_GetDotWidth(), j * Graphics_GetDotHeight() + Graphics_GetDotHeight(), playfield[i][j]);
 
 	/* draw status line */
 	sprintf(txt,"Used turns: %d",turns);
-	Graphics_DrawText(screen,0,0,txt);
+	Graphics_DrawText(0,0,txt);
 	sprintf(txt,"Limit: %d",limit);
-	Graphics_DrawText(screen,((SCREEN_WIDTH *2) / 3),0,txt);
+	Graphics_DrawText(((SCREEN_WIDTH *2) / 3),0,txt);
 	sprintf(txt,"%s",VERSION);
-	Graphics_DrawText(screen, 0, (SCREEN_HEIGHT - Graphics_GetFontHeight()), txt);
+	Graphics_DrawText(0, (SCREEN_HEIGHT - Graphics_GetFontHeight()), txt);
 }
 
 /* this function tells you wether you have won or not... */

@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 25.01.2010 : 17:44
+ * last Modified: 30.01.2010 : 18:35
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
     #include "version.h"
 	#include "sysconfig.h"
+	#include "boolean.h"
 	#include <SDL/SDL.h>
 
 	/************
@@ -45,23 +46,28 @@
 	/**********
 	 * MACROS *
 	 **********/
-	#define SCREEN_WIDTH 	(screen->w)
-	#define SCREEN_HEIGHT 	(screen->h)
+	#define SCREEN_WIDTH 	Graphics_GetScreenWidth()
+	#define SCREEN_HEIGHT 	Graphics_GetScreenHeight()
 
 	/**************
 	 * PROTOTYPES *
 	 **************/
 
-	void Graphics_DrawBackground(SDL_Surface *, Uint8);
-	void Graphics_DrawDot(SDL_Surface *, Uint16, Uint16, Uint8);
-	void Graphics_DrawOuterFrame(SDL_Surface *);
-	void Graphics_DrawText(SDL_Surface *, Uint16, Uint16, char *);
-	void Graphics_DrawTitle(SDL_Surface *);
-	void Graphics_DrawInstructions(SDL_Surface *);
-	void Graphics_Init(void);
+	void Graphics_DrawBackground(Uint8);
+	void Graphics_DrawDot(Uint16, Uint16, Uint8);
+	void Graphics_DrawOuterFrame(void);
+	void Graphics_DrawText(Uint16, Uint16, char *);
+	void Graphics_DrawTitle(void);
+	void Graphics_DrawInstructions(void);
+	void Graphics_DrawWinMessage(void);
+	void Graphics_DrawGameoverMessage(void);
+	BOOLEAN Graphics_Init(BOOLEAN);
+	void Graphics_UpdateScreen(void);
 	void Graphics_CleanUp(void);
 	Uint16 Graphics_GetDotWidth(void);
 	Uint16 Graphics_GetDotHeight(void);
+	Uint16 Graphics_GetScreenWidth(void);
+	Uint16 Graphics_GetScreenHeight(void);
 	Uint16 Graphics_GetFontHeight(void);
 	SDL_Surface* Graphics_LoadGraphicsResource(char*);
 	void Graphics_SetWindowIcon(void);

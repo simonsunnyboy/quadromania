@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 25.01.2010 : 17:56
+ * last Modified: 30.01.2010 : 18:37
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
  *
  */
 
-#include <SDL/SDL.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,8 +36,6 @@
 #include "main.h"
 #include "event.h"
 #include "gui.h"
-
-SDL_Surface *screen; /* SDL Surface for video memory */
 
 /* the main function - program execution starts here... */
 int main(int argc, char *argv[])
@@ -114,58 +111,20 @@ int main(int argc, char *argv[])
 
 BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 {
-	/* initialize SDL...  */
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		fprintf(stderr, "%s\n\nUnable to initialize SDL: %s\n", VERSION,
-				SDL_GetError());
-		return (FALSE);
-	}
-	/* make sure to shutdown SDL at program end... */
-	atexit(SDL_Quit);
-
-	Graphics_SetWindowIcon(); /* set window icon */
-
-	/* Set an appropriate 16-bit video mode. */
-#if(SCREENRES == _HIGH)
-	if ((screen = SDL_SetVideoMode(640, 480, 16,
-			((fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SDL_HWSURFACE
-					| SDL_DOUBLEBUF)) == NULL)
-	{
-		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
-				VERSION, SDL_GetError());
-		return (FALSE);
-	}
-#elif(SCREENRES == _LOW)
-	if ((screen = SDL_SetVideoMode(320, 240, 16, ((fullscreen == TRUE) ? SDL_FULLSCREEN
-									: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
-	{
-		fprintf(stderr, "%s\n\nUnable to set 320x240x16 video mode: %s\n",
-				VERSION, SDL_GetError());
-		return (FALSE);
-	}
-#else
-#error screen resolution is not properly defined
-	return(FALSE);
-#endif
-
-	/* set window title.. */
-	SDL_WM_SetCaption(VERSION, NULL);
-
-#if(HAVE_MOUSE_POINTER == 0)
-	/* disable mouse pointer if configured */
-	SDL_ShowCursor(SDL_DISABLE);
-#endif
-
 	/* initialize random number generator... */
 	Random_InitSeed();
 	/* initialize graphics module... */
-	Graphics_Init();
-	/* initialize event handler */
-	Event_Init();
-	Quadromania_ClearPlayfield();
-
-	return (TRUE);
+	if(Graphics_Init(fullscreen))
+	{
+		/* initialize event handler */
+		Event_Init();
+		Quadromania_ClearPlayfield();
+		return (TRUE);
+	}
+	else
+	{
+		return(FALSE);
+	}
 }
 
 void MainHandler()
@@ -211,7 +170,7 @@ void MainHandler()
 			if (oldstatus != status) /* recently switched to the title screen? */
 			{
 				/* then we have to redraw it....*/
-				GUI_DrawMainmenu(screen, maxrotations + 1, level);
+				GUI_DrawMainmenu(maxrotations + 1, level);
 				if (status == SETUPCHANGED)
 					status = TITLE;
 				oldstatus = status;
@@ -222,7 +181,7 @@ void MainHandler()
 			{
 				if (Event_GetMouseButton() == 1)
 				{
-					menu = GUI_GetClickedMenuEntry(screen);
+					menu = GUI_GetClickedMenuEntry();
 					switch (menu)
 					{
 					case MENU_START_GAME:
@@ -231,8 +190,8 @@ void MainHandler()
 						Quadromania_InitPlayfield(
 								Quadromania_GetRotationsPerLevel(level),
 								maxrotations);
-						Quadromania_DrawPlayfield(screen);
-						SDL_Flip(screen);
+						Quadromania_DrawPlayfield();
+						Graphics_UpdateScreen();
 						break;
 					case MENU_CHANGE_NR_OF_COLORS:
 						/* "Select Colors" ? */
@@ -270,7 +229,7 @@ void MainHandler()
 			{
 				oldstatus = status;
 				/* redraw instructions screen */
-				Graphics_DrawInstructions(screen);
+				Graphics_DrawInstructions();
 
 			}
 			if (Event_MouseClicked() == TRUE)
@@ -309,8 +268,8 @@ void MainHandler()
 					{
 						/* then rotate the correct 3x3 part... */
 						Quadromania_Rotate(xraster, yraster);
-						Quadromania_DrawPlayfield(screen);
-						SDL_Flip(screen);
+						Quadromania_DrawPlayfield();
+						Graphics_UpdateScreen();
 
 						/* check for unsuccessful end*/
 						if (Quadromania_IsTurnLimithit())
@@ -331,7 +290,7 @@ void MainHandler()
 			if (status != oldstatus)
 			{
 				oldstatus = status;
-				GUI_DrawWinMessage(screen);
+				Graphics_DrawWinMessage();
 			}
 
 			if (Event_MouseClicked() == TRUE)
@@ -345,7 +304,7 @@ void MainHandler()
 			if (status != oldstatus)
 			{
 				oldstatus = status;
-				GUI_DrawGameoverMessage(screen);
+				Graphics_DrawGameoverMessage();
 			}
 
 			if (Event_MouseClicked() == TRUE)
