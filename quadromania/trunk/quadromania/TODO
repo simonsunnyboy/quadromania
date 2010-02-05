@@ -1,6 +1,5 @@
 TODO list for quadromania
-
-	* move all SDL specifics to Graphics or Event for encapsulation
+	
 	* add music and sound effects (module Audio)
 	* fix instructions screen
 	* fix copyright graphics

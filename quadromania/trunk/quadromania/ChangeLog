@@ -1,3 +1,6 @@
+05.02.2010:
+	- ensure the TODO list is delivered with binary distributions for Wiz
+
 30.01.2010:
 	- move all screen handling into Graphics module for abstraction
 

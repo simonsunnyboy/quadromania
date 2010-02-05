@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile.wiz - Makefile for building quadromania for a GP2X Wiz target 
-# last Modified: 26.01.2010 : 17:46
+# last Modified: 05.02.2010 : 23:09
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ dist: $(EXECUTABLE)
 	mkdir game/quadromania/data/icons/
 	cp data/lowres/*.png game/quadromania/data/lowres/
 	cp data/icons/*.png game/quadromania/data/icons/
-	cp README ChangeLog AUTHORS COPYING game/quadromania/
+	cp TODO README ChangeLog AUTHORS COPYING game/quadromania/
 	cp $(EXECUTABLE) game/quadromania/
 	cp GP2X_Wiz/quadromania.ini game/
 	cp GP2X_Wiz/README.wiz game/quadromania
