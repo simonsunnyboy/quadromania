@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 30.01.2010 : 18:33
+ * last Modified: 09.02.2010 : 17:37
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
  */
 
 /* for data types... */
-#include <SDL/SDL.h>
+#include "datatypes.h"
 
 #include "random.h"
 #include "graphics.h"

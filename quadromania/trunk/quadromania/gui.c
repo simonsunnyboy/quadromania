@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.c - handles drawing the GUI and dialogues to the screen + verifies input on the GUI
- * last Modified: 30.01.2010 : 18:38
+ * last Modified: 09.02.2010 : 17:38
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +23,12 @@
  *
  */
 
-#include <SDL/SDL.h>
 #include <stdio.h>
 
+#include "datatypes.h"
 #include "gui.h"
 #include "graphics.h"
 #include "event.h"
-#include "SFont.h"
 #include "quadromania.h"
 
 /*******************************

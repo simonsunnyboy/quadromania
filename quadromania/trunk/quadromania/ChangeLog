@@ -1,3 +1,6 @@
+09.02.2010:
+	- introduced datatypes.h to encapsulate used data types
+
 05.02.2010:
 	- ensure the TODO list is delivered with binary distributions for Wiz
 

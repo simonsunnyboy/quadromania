@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: random.c - implements a random number generator
- * last Modified: 11.11.2003 : 18:51
+ * last Modified: 09.02.2010 : 17:37
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  *
  */
 
-#include <SDL/SDL.h>
+#include "datatypes.h"
 #include <time.h>
 #include "random.h"
 /* This is a simple custom pseudorandom number generator. It's not a very

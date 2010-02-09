@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sysconfig.h - target system specific settings at compile time
- * last Modified: 24.01.2010 : 18:12
+ * last Modified: 09.02.2010 : 17:32
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,13 @@
 		#define SCREENRES 					_LOW
 		#define HAVE_WINDOWED_MODE          0
 		#define HAVE_MOUSE_POINTER          0
+		#define HAVE_SDL_DATATYPES          1
 	#else
 		/* default SDL target for use with windowing GUI, e.q. X11/Windows/Mac OS */
 		#define SCREENRES 					_HIGH
 		#define HAVE_WINDOWED_MODE          1
 		#define HAVE_MOUSE_POINTER          1
+        #define HAVE_SDL_DATATYPES          1
 	#endif
 
 #endif /* __SYSCONFIG_H */

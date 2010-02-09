@@ -2,8 +2,8 @@
  * Quadromania
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
- * File: event.h - symbolic constants, data types and function prototypes for event handling
- * last Modified: 09.02.2010 : 17:41
+ * File: datatypes.h - header file for defining platform independent data types
+ * last Modified: 09.02.2010 : 17:32
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,34 +23,24 @@
  *
  */
 
-#ifndef __EVENT_H
-#define __EVENT_H
-	#include "datatypes.h"
-    #include "boolean.h"
+#ifndef __DATATYPES_H
+#define __DATATYPES_H
 
+	#include "sysconfig.h"
 
-	/**************************
-	 * DATA TYPE DECLARATIONS *
-     **************************/
-	typedef struct
-	{
-		Uint16 x, y;
-		Uint8 button;
-		BOOLEAN clicked;
-	} MOUSE;
+#if(HAVE_SDL_DATATYPES == 1)
+	#include <SDL/SDL.h>
+#else
+	/* we have to typedef the datatypes with SDL naming conventiosn if we don't have them */
+	/* FIXME: if stdint.h is available point to those instead */
 
-	/**************
-	 * PROTOTYPES *
-	 **************/
-	void Event_Init(void);
-	void Event_ProcessInput(void);
-	BOOLEAN Event_QuitRequested(void);
-	BOOLEAN Event_IsESCPressed(void);
-	Uint16 Event_GetMouseX(void);
-	Uint16 Event_GetMouseY(void);
-	Uint8 Event_GetMouseButton(void);
-	BOOLEAN Event_MouseClicked(void);
-	void Event_DebounceMouse(void);
-	void Event_DebounceKeys(void);
+	typedef unsigned char Uint8;
+	typedef unsigned short Uint16;
+	typedef unsigned long Uint32;
+	typedef signed char Sint8;
+	typedef signed short Sint16;
+	typedef signed long Sint32;
 
-#endif /* __EVENT_H */
+#endif
+
+#endif /* __DATATYPES_H */

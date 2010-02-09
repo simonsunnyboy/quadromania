@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.h - declarations for the main module
- * last Modified: 25.01.2010 : 17:56
+ * last Modified: 09.02.2010 : 17:40
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 
     #include "version.h"
 	#include "sysconfig.h"
+	#include "datatypes.h"
+	#include "boolean.h"
 
 	/**************************
 	 * DATA TYPE DECLARATIONS *

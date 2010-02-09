@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: boolean.h - symbolic constants for boolean values
- * last Modified: 25.01.2010 : 17:57
+ * last Modified: 09.02.2010 : 17:36
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #ifndef __BOOLEAN_H
 	#define __BOOLEAN_H
 
-	#include <SDL/SDL.h>
+	#include "datatypes.h"
 
 	#define FALSE 0
 	#define TRUE 1
