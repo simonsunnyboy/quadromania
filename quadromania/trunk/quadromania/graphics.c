@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 30.01.2010 : 18:36
+ * last Modified: 09.02.2010 : 18:05
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,24 +110,12 @@ void Graphics_DrawTitle()
 void Graphics_DrawInstructions()
 {
 	const char *continue_msg = "Click here to continue!";
-
-	const char *instructions_text[] =
-	{
-	 "Your task is to restore all stones to red." ,
-	 "You select the amount of colours to use and" ,
-	 "the amount of initial rotations." ,
-	 "The computer will rotate a named amount of" ,
-	 "3x3 tile sets and will flip their colours." ,
-	 "The last possible color will turn red again." ,
-	 "In game click on the center point of a 3x3 tile" ,
-	 "set to exchange the tiles in the order." ,
-	 "Restore the board with limited turns.",
-	 NULL
-	};
 	const Uint16 instruction_y = ((SCREEN_HEIGHT * 120) / 480);
-	Uint16 y;
-	Uint8 i = 0;
+	
 	SDL_Rect src, dest;
+	SDL_Surface *instructions_gfx;
+
+	instructions_gfx  = Graphics_LoadGraphicsResource("instructions.png");
 
 	Graphics_DrawBackground(0);
 	Graphics_DrawOuterFrame();
@@ -142,20 +130,21 @@ void Graphics_DrawInstructions()
 	dest.h = 0;
 	SDL_BlitSurface(titel, &src, screen, &dest);
 	XCenteredString(screen, instruction_y, "Instructions");
-	i = 0;
-	for (y = instruction_y + font_height; y < (SCREEN_HEIGHT - font_height); y
-			= y + font_height)
-	{
-		if (instructions_text[i] == NULL)
-		{
-			break; /* stop drawing instruction text*/
-		}
-		Graphics_DrawText(dot_width, y, (char *) instructions_text[i]);
-		i++;
-	}
+	/* draw instructions */
+	src.x = 0;
+	src.y = 0;
+	src.w = instructions_gfx->w;
+	src.h = instructions_gfx->h;
+	dest.x = ((SCREEN_WIDTH / 2) - (instructions_gfx->w / 2));
+	dest.y = instruction_y + (dot_height/2);
+	dest.w = 0;
+	dest.h = 0;
+	SDL_BlitSurface(instructions_gfx, &src, screen, &dest);
 
 	Graphics_DrawText((SCREEN_WIDTH - TextWidth((char *)continue_msg)),(SCREEN_HEIGHT - font_height),(char *)continue_msg);
 	Graphics_UpdateScreen();
+
+	SDL_FreeSurface(instructions_gfx);
 }
 
 /* draw the outer frame... */
@@ -363,7 +352,7 @@ Uint16 Graphics_GetFontHeight()
 /* load a graphics ressource from disk or flash */
 SDL_Surface* Graphics_LoadGraphicsResource(char* inputfilename)
 {
-	char filename[50]; /* temporary filename buffer */
+	char filename[255]; /* temporary filename buffer */
 	if(strcmp("*ICON*", inputfilename) == 0)
 	{
 		sprintf ( filename, "data/icons/quadromania32.png"); /* construct filename */

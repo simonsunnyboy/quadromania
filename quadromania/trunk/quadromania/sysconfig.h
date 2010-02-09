@@ -44,4 +44,6 @@
         #define HAVE_SDL_DATATYPES          1
 	#endif
 
+#define __DEBUG
+
 #endif /* __SYSCONFIG_H */
