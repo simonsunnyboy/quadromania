@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 09.02.2010 : 17:26
+# last Modified: 05.03.2010 : 17:42
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ SDL_LIB=`sdl-config --libs`
 CC=gcc
 
 # object files needed to link the executable
-OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o
+OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o highscore.o
 # name of executable
 EXECUTABLE = quadromania
 	
@@ -50,6 +50,8 @@ random.o: random.c random.h
 quadromania.o: quadromania.c quadromania.h version.h boolean.h
 
 event.o: event.c event.h boolean.h
+
+highscore.o: highscore.c highscore.h datatypes.h
 
 SFont.o: SFont.c SFont.h
 

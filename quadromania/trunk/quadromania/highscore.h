@@ -2,8 +2,8 @@
  * Quadromania
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
- * File: main.h - declarations for the main module
- * last Modified: 05.03.2010 : 18:02
+ * File: highscore.h - header file for the highscore API
+ * last Modified: 05.03.2010 : 18:00
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,27 +23,52 @@
  *
  */
 
-#ifndef __MAIN_H
-	#define __MAIN_H
+#ifndef __HIGHSCORE_H
+#define __HIGHSCORE_H
 
-    #include "version.h"
-	#include "sysconfig.h"
 	#include "datatypes.h"
-	#include "boolean.h"
+
+	/************
+	 * DEFINES  *
+	 ************/
+
+	#define HIGHSCORE_MAX_LEN_OF_NAME         20
+	#define HIGHSCORE_NR_OF_TABLES            10
+	#define HIGHSCORE_NR_OF_ENTRIES_PER_TABLE 8
+
+	/**********
+	 * MACROS *
+	 **********/
+
+	#define HIGHSCORE_NO_ENTRY                HIGHSCORE_NR_OF_ENTRIES_PER_TABLE
 
 	/**************************
 	 * DATA TYPE DECLARATIONS *
 	 **************************/
-	enum GAMESTATE
+
+	typedef Uint8 tChecksum;
+
+	typedef struct
 	{
-		UNINITIALIZED, NONE, TITLE, INSTRUCTIONS, SETUPCHANGED, GAME, WON, GAMEOVER, HIGHSCORE_ENTRY, SHOW_HIGHSCORES, QUIT
-	};
+		Uint32 score;
+		char name[HIGHSCORE_MAX_LEN_OF_NAME];
+	} HighscoreEntry;
+
+	typedef struct
+	{
+		tChecksum checksum;  /* */
+		HighscoreEntry Entry[HIGHSCORE_NR_OF_TABLES][HIGHSCORE_NR_OF_ENTRIES_PER_TABLE];
+		tChecksum checksum_;
+	} HighscoreFile;
 
 	/**************
 	 * PROTOTYPES *
 	 **************/
 
-	BOOLEAN InitGameEngine(BOOLEAN activate_fullscreen);
-	void MainHandler(void);
+	void Highscore_LoadTable(void);
+	void Highscore_SaveTable(void);
+	Uint16 Highscore_GetPosition(Uint16 table, Uint32 score);
+	void Highscore_EnterScore(Uint16 table, Uint32 score, char *name, Uint16 position);
+	void Highscore_GetEntry(Uint16 table, Uint16 rank, HighscoreEntry *entry);
 
-#endif
+#endif /* __HIGHSCORE_H */

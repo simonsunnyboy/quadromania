@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 09.02.2010 : 18:05
+ * last Modified: 05.03.2010 : 18:31
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 #include "graphics.h"
 #include "SFont.h"
+#include "highscore.h"
 
 static SDL_Surface *screen;
 
@@ -111,7 +112,7 @@ void Graphics_DrawInstructions()
 {
 	const char *continue_msg = "Click here to continue!";
 	const Uint16 instruction_y = ((SCREEN_HEIGHT * 120) / 480);
-	
+
 	SDL_Rect src, dest;
 	SDL_Surface *instructions_gfx;
 
@@ -145,6 +146,43 @@ void Graphics_DrawInstructions()
 	Graphics_UpdateScreen();
 
 	SDL_FreeSurface(instructions_gfx);
+}
+
+/* draw given highscore table  */
+void Graphics_ListHighscores(Uint16 nr_of_table)
+{
+	Uint16 i;
+	char txt[30];
+	SDL_Rect src,dest;
+	const Uint16 highscore_y = ((SCREEN_HEIGHT * 120) / 480);
+
+	HighscoreEntry entry;
+
+	Graphics_DrawBackground(1);
+	Graphics_DrawOuterFrame();
+	/* draw logo */
+	src.x = 0;
+	src.y = 0;
+	src.w = titel->w;
+	src.h = titel->h;
+	dest.x = ((SCREEN_WIDTH / 2) - (titel->w / 2));
+	dest.y = dot_height;
+	dest.w = 0;
+	dest.h = 0;
+	SDL_BlitSurface(titel, &src, screen, &dest);
+	sprintf(txt,"High scores for Level %d",nr_of_table+1);
+	XCenteredString(screen, highscore_y, txt);
+
+	for(i = 0; i < HIGHSCORE_NR_OF_ENTRIES_PER_TABLE; i++)
+	{
+		Highscore_GetEntry(nr_of_table, i, &entry);
+		sprintf(txt,"%s",&entry.name[0]);
+		Graphics_DrawText(dot_width, highscore_y + (i + 1) * font_height,txt);
+		sprintf(txt,"%d",entry.score);
+		Graphics_DrawText(((SCREEN_WIDTH / 3) * 4), highscore_y + (i + 1) * font_height,txt);
+	}
+
+	Graphics_UpdateScreen();
 }
 
 /* draw the outer frame... */

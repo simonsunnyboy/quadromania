@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.h - header file for the graphics API
- * last Modified: 30.01.2010 : 18:35
+ * last Modified: 05.03.2010 : 18:09
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,6 +61,7 @@
 	void Graphics_DrawInstructions(void);
 	void Graphics_DrawWinMessage(void);
 	void Graphics_DrawGameoverMessage(void);
+	void Graphics_ListHighscores(Uint16 nr_of_table);
 	BOOLEAN Graphics_Init(BOOLEAN);
 	void Graphics_UpdateScreen(void);
 	void Graphics_CleanUp(void);

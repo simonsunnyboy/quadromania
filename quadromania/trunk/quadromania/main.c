@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 09.02.2010 : 17:38
+ * last Modified: 05.03.2010 : 18:31
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "random.h"
 #include "graphics.h"
 #include "quadromania.h"
+#include "highscore.h"
 #include "boolean.h"
 #include "SFont.h"
 
@@ -132,10 +133,14 @@ void MainHandler()
 {
 	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
 
-	tGUI_MenuEntries menu; /* the current selected menu entry */
+	tGUI_MenuEntries menu;  /* the current selected menu entry */
 
-	Uint8 maxrotations = 1; /* setup variable for the maximum amount of possible colors... */
-	Uint8 level = 1; /* game level - to setup the desired amount of initial rotations... */
+	Uint8 maxrotations = 1;        /* setup variable for the maximum amount of possible colors      */
+	Uint8 level = 1;               /* game level - to setup the desired amount of initial rotations */
+	Uint16 score = 0;              /* the score calculated from turn to limit ratio at game over    */
+	Uint16 highscore_position = 0; /* possible highscore list entry position                        */
+
+	char dummy_entry[] = "* ENTRY *";
 
 	status = UNINITIALIZED;
 	oldstatus = status;
@@ -272,6 +277,9 @@ void MainHandler()
 						Quadromania_DrawPlayfield();
 						Graphics_UpdateScreen();
 
+						/* update score */
+						score = Quadromania_GetPercentOfSolution();
+
 						/* check for unsuccessful end*/
 						if (Quadromania_IsTurnLimithit())
 							status = GAMEOVER;
@@ -297,7 +305,7 @@ void MainHandler()
 			if (Event_MouseClicked() == TRUE)
 			{
 				Event_DebounceMouse();
-				status = TITLE;
+				status = HIGHSCORE_ENTRY;
 			}
 			break;
 
@@ -306,6 +314,31 @@ void MainHandler()
 			{
 				oldstatus = status;
 				Graphics_DrawGameoverMessage();
+			}
+
+			if (Event_MouseClicked() == TRUE)
+			{
+				Event_DebounceMouse();
+				status = HIGHSCORE_ENTRY;
+			}
+			break;
+		case HIGHSCORE_ENTRY:
+			if((highscore_position = Highscore_GetPosition(level-1,score)) != HIGHSCORE_NO_ENTRY)
+			{
+				Highscore_EnterScore(level-1, score, dummy_entry , highscore_position);
+				fprintf(stderr,"highscore: %d, Position %d\n",score,highscore_position);
+				status = SHOW_HIGHSCORES;
+			}
+			else
+			{
+				status = TITLE;
+			}
+			break;
+		case SHOW_HIGHSCORES:
+			if (status != oldstatus)
+			{
+				oldstatus = status;
+				Graphics_ListHighscores(level-1);
 			}
 
 			if (Event_MouseClicked() == TRUE)
