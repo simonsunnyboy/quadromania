@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.h - header file for the game logic module
- * last Modified: 30.01.2010 : 18:32
+ * last Modified: 06.03.2010 : 11:28
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,6 @@
 	void Quadromania_DrawPlayfield(void);
 	BOOLEAN Quadromania_IsGameWon(void);
 	BOOLEAN Quadromania_IsTurnLimithit(void);
-	Uint16 Quadromania_GetPercentOfSolution(void);
+	Uint32 Quadromania_GetPercentOfSolution(void);
 	Uint16 Quadromania_GetRotationsPerLevel(Uint8);
 #endif

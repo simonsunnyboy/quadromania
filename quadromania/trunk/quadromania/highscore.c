@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: highscore.c - handles the highscore entries, loads and saves the highscore file
- * last Modified: 05.03.2010 : 18:00
+ * last Modified: 06.03.2010 : 11:48
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,15 +26,18 @@
 /* for data types... */
 #include "datatypes.h"
 #include "highscore.h"
+#include "boolean.h"
 
 #include <string.h>
 
 HighscoreFile hiscores;
 
-const HighscoreEntry empty =
+BOOLEAN hiscore_entry = FALSE;
+
+HighscoreEntry empty =
 {
 	0,
-	""
+	"Nobody"
 };
 
 tChecksum Highscore_CalculateChecksum(void);
@@ -73,6 +76,11 @@ void Highscore_LoadTable(void)
 void Highscore_SaveTable(void)
 {
 	/* TODO: save highscores with proper checksum to disk */
+	if(hiscore_entry == TRUE)
+	{
+		/* only save scores if we really had an entry */
+		hiscore_entry = FALSE;
+	}
 	return;
 }
 
@@ -121,30 +129,32 @@ void Highscore_EnterScore(Uint16 table, Uint32 score, char *name, Uint16 positio
 	/* assert size of name string before writing it into the highscore table */
 	if(strlen(name) < HIGHSCORE_MAX_LEN_OF_NAME)
 	{
-		strcpy(name, hiscores.Entry[table][position].name);
+		strcpy(hiscores.Entry[table][position].name, name);
 	}
 	else
 	{
-		strncpy(name, hiscores.Entry[table][position].name, HIGHSCORE_MAX_LEN_OF_NAME);
+		strncpy(hiscores.Entry[table][position].name, name, HIGHSCORE_MAX_LEN_OF_NAME);
 	}
+
+	hiscore_entry = TRUE;
+
 	return;
 }
 
 /* returns the named entry from the highscore list for display */
-void Highscore_GetEntry(Uint16 table, Uint16 rank, HighscoreEntry *entry)
+HighscoreEntry* Highscore_GetEntry(Uint16 table, Uint16 rank)
 {
 	if(  (table>=HIGHSCORE_NR_OF_TABLES)
 	   ||(rank>=HIGHSCORE_NR_OF_ENTRIES_PER_TABLE)
 	  )
 	{
 		/* invalid table position returns an empty entry */
-		*entry = empty;
+		return &empty;
 	}
 	else
 	{
-		*entry = hiscores.Entry[table][rank];
+		return &hiscores.Entry[table][rank];
 	}
-	return;
 }
 
 /* calculates a checksum over the highscore table data */

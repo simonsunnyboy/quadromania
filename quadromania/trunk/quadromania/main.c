@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 05.03.2010 : 18:31
+ * last Modified: 06.03.2010 : 11:44
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,6 +115,8 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 {
 	/* initialize random number generator... */
 	Random_InitSeed();
+	/* load highscores from disk */
+	Highscore_LoadTable();
 	/* initialize graphics module... */
 	if(Graphics_Init(fullscreen))
 	{
@@ -137,7 +139,7 @@ void MainHandler()
 
 	Uint8 maxrotations = 1;        /* setup variable for the maximum amount of possible colors      */
 	Uint8 level = 1;               /* game level - to setup the desired amount of initial rotations */
-	Uint16 score = 0;              /* the score calculated from turn to limit ratio at game over    */
+	Uint32 score = 0;              /* the score calculated from turn to limit ratio at game over    */
 	Uint16 highscore_position = 0; /* possible highscore list entry position                        */
 
 	char dummy_entry[] = "* ENTRY *";
@@ -208,15 +210,19 @@ void MainHandler()
 						break;
 
 					case MENU_CHANGE_NR_OF_ROTATIONS:
-						/* "Select Colors" ? */
+						/* "Select number of rotations" ? */
 						status = SETUPCHANGED;
 						++level;
-						if (level > 10)
+						if (level > HIGHSCORE_NR_OF_TABLES)
 							level = 1;
 						break;
 					case MENU_INSTRUCTIONS:
 						/* "Instructions" ? */
 						status = INSTRUCTIONS;
+						break;
+					case MENU_HIGHSCORES:
+						/* Highscores? */
+						status = SHOW_HIGHSCORES;
 						break;
 					case MENU_QUIT:
 						status = QUIT;
@@ -279,7 +285,9 @@ void MainHandler()
 
 						/* update score */
 						score = Quadromania_GetPercentOfSolution();
-
+#ifdef _DEBUG
+						fprintf(stderr,"Score: %d\n",score);
+#endif
 						/* check for unsuccessful end*/
 						if (Quadromania_IsTurnLimithit())
 							status = GAMEOVER;
@@ -326,7 +334,9 @@ void MainHandler()
 			if((highscore_position = Highscore_GetPosition(level-1,score)) != HIGHSCORE_NO_ENTRY)
 			{
 				Highscore_EnterScore(level-1, score, dummy_entry , highscore_position);
+#ifdef _DEBUG
 				fprintf(stderr,"highscore: %d, Position %d\n",score,highscore_position);
+#endif
 				status = SHOW_HIGHSCORES;
 			}
 			else
@@ -358,5 +368,8 @@ void MainHandler()
 		}
 
 	} while (status != QUIT);
+
+	/* save highscores at game end */
+	Highscore_SaveTable();
 
 }

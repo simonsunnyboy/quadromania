@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.c - handles drawing the GUI and dialogues to the screen + verifies input on the GUI
- * last Modified: 09.02.2010 : 17:38
+ * last Modified: 06.0232010 : 11:35
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,9 @@ void GUI_DrawMainmenu( Uint8 nr_of_dots, Uint8 selected_level)
 	Graphics_DrawText( ((SCREEN_WIDTH * 480) / 640),
 			GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS], nstr);
 
+	Graphics_DrawText(menu_column, GUI_MenuPosition[MENU_HIGHSCORES],
+				"Highscores");
+
 	Graphics_DrawText(menu_column, GUI_MenuPosition[MENU_INSTRUCTIONS],
 			"Instructions");
 
@@ -106,6 +109,8 @@ void GUI_InitMenuCoordinates()
 	GUI_MenuPosition[MENU_CHANGE_NR_OF_COLORS] = start_pos + offset_per_line;
 	GUI_MenuPosition[MENU_CHANGE_NR_OF_ROTATIONS] = start_pos + offset_per_line
 			* 2;
+	GUI_MenuPosition[MENU_HIGHSCORES] = start_pos + offset_per_line
+				* 3;
 	GUI_MenuPosition[MENU_INSTRUCTIONS] = start_pos + offset_per_line * 4;
 	GUI_MenuPosition[MENU_QUIT] = start_pos + offset_per_line * 5;
 	return;
@@ -135,6 +140,11 @@ tGUI_MenuEntries GUI_GetClickedMenuEntry()
 						+ font_height))
 		{
 			return MENU_CHANGE_NR_OF_ROTATIONS;
+		}
+		else if ((mouse_y > GUI_MenuPosition[MENU_HIGHSCORES]) && (mouse_y
+						< GUI_MenuPosition[MENU_HIGHSCORES] + font_height))
+		{
+			return MENU_HIGHSCORES;
 		}
 		else if ((mouse_y > GUI_MenuPosition[MENU_INSTRUCTIONS]) && (mouse_y
 				< GUI_MenuPosition[MENU_INSTRUCTIONS] + font_height))

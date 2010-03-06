@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 05.03.2010 : 18:31
+ * last Modified: 06.03.2010 : 11:57
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,12 +151,12 @@ void Graphics_DrawInstructions()
 /* draw given highscore table  */
 void Graphics_ListHighscores(Uint16 nr_of_table)
 {
-	Uint16 i;
+	Uint16 i,y;
 	char txt[30];
 	SDL_Rect src,dest;
 	const Uint16 highscore_y = ((SCREEN_HEIGHT * 120) / 480);
 
-	HighscoreEntry entry;
+	HighscoreEntry *entry;
 
 	Graphics_DrawBackground(1);
 	Graphics_DrawOuterFrame();
@@ -175,11 +175,17 @@ void Graphics_ListHighscores(Uint16 nr_of_table)
 
 	for(i = 0; i < HIGHSCORE_NR_OF_ENTRIES_PER_TABLE; i++)
 	{
-		Highscore_GetEntry(nr_of_table, i, &entry);
-		sprintf(txt,"%s",&entry.name[0]);
-		Graphics_DrawText(dot_width, highscore_y + (i + 1) * font_height,txt);
-		sprintf(txt,"%d",entry.score);
-		Graphics_DrawText(((SCREEN_WIDTH / 3) * 4), highscore_y + (i + 1) * font_height,txt);
+		entry=Highscore_GetEntry(nr_of_table, i);
+#ifdef _DEBUG
+		fprintf(stderr, "%s %d\n",entry->name, entry->score);
+#endif
+
+		y = highscore_y + ((i + 2) * font_height);
+
+		sprintf(txt,"%s",entry->name);
+		Graphics_DrawText(dot_width, y,txt);
+		sprintf(txt,"%d",entry->score);
+		Graphics_DrawText(((SCREEN_WIDTH * 3) / 4), y,txt);
 	}
 
 	Graphics_UpdateScreen();

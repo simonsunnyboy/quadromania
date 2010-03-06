@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: quadromania.c - handles the game logic and the playfield
- * last Modified: 09.02.2010 : 17:37
+ * last Modified: 06.03.2010 : 11:28
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,7 +154,7 @@ BOOLEAN Quadromania_IsTurnLimithit()
 }
 
 /* Return percentage of solutions (turns to limit ratio)*100 */
-Uint16 Quadromania_GetPercentOfSolution()
+Uint32 Quadromania_GetPercentOfSolution()
 {
 	if(Quadromania_IsTurnLimithit()==TRUE)
 	{
@@ -162,7 +162,7 @@ Uint16 Quadromania_GetPercentOfSolution()
 	}
 	else
 	{
-		return((Uint16)(((limit-turns)*10000)/turns));
+		return((Uint32)(((limit-turns)*10000)/turns));
 	}
 }
 

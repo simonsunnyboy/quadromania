@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: highscore.h - header file for the highscore API
- * last Modified: 05.03.2010 : 18:00
+ * last Modified: 06.03.2010 : 11:08
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,6 @@
 	void Highscore_SaveTable(void);
 	Uint16 Highscore_GetPosition(Uint16 table, Uint32 score);
 	void Highscore_EnterScore(Uint16 table, Uint32 score, char *name, Uint16 position);
-	void Highscore_GetEntry(Uint16 table, Uint16 rank, HighscoreEntry *entry);
+	HighscoreEntry* Highscore_GetEntry(Uint16 table, Uint16 rank);
 
 #endif /* __HIGHSCORE_H */

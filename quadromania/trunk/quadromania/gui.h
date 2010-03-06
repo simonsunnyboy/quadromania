@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: gui.h - header file for the GUI handling
- * last Modified: 09.02.2010 : 17:40
+ * last Modified: 06.03.2010 : 11:32
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,8 @@
 		MENU_CHANGE_NR_OF_COLORS = 2,
 		MENU_CHANGE_NR_OF_ROTATIONS = 3,
 		MENU_INSTRUCTIONS = 4,
-		MENU_QUIT = 5
+		MENU_HIGHSCORES = 5,
+		MENU_QUIT = 6
 	} tGUI_MenuEntries;
 
 
