@@ -23,9 +23,10 @@ as usual. Tap the icon to launch the game.
 Firmware versions
 =================
 
-Sofar the GP2X Wiz port has only been tested with the original firmware as
-delivered in April 2009. If any compatibility issues will occur, this will
-be noted here.
+The GP2X Wiz port has been tested with the original firmware as
+delivered in April 2009 and the v1.2.1 version from February 2010.
+
+If any compatibility issues will occur, this will be noted here.
 
 Known Bugs
 ==========
@@ -42,4 +43,5 @@ Known Bugs
 
 4. The game cannot be interrupted on the Wiz yet.
 
-5. The instruction screen is not 100% adapted to the small display yet.
+5. Highscores are not yet saved to SD/NAND.
+

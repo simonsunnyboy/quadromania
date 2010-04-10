@@ -51,6 +51,9 @@ If you need less turns than the computer you score for the difference.
 The score is larger if fewer turns are needed so try clearing the
 board with the fewest number of turns.
 
+If your score is good enough, it will be listed in the highscore table
+with the current timestamp.
+
 Contact information
 ===================
 
