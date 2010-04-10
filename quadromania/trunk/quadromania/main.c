@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 06.03.2010 : 11:44
+ * last Modified: 10.04.2010 : 12:09
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,7 +142,7 @@ void MainHandler()
 	Uint32 score = 0;              /* the score calculated from turn to limit ratio at game over    */
 	Uint16 highscore_position = 0; /* possible highscore list entry position                        */
 
-	char dummy_entry[] = "* ENTRY *";
+	char *highscore_entry;
 
 	status = UNINITIALIZED;
 	oldstatus = status;
@@ -333,7 +333,8 @@ void MainHandler()
 		case HIGHSCORE_ENTRY:
 			if((highscore_position = Highscore_GetPosition(level-1,score)) != HIGHSCORE_NO_ENTRY)
 			{
-				Highscore_EnterScore(level-1, score, dummy_entry , highscore_position);
+				highscore_entry = Highscore_GetNameFromTimestamp();
+				Highscore_EnterScore(level-1, score, highscore_entry , highscore_position);
 #ifdef _DEBUG
 				fprintf(stderr,"highscore: %d, Position %d\n",score,highscore_position);
 #endif

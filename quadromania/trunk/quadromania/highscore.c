@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: highscore.c - handles the highscore entries, loads and saves the highscore file
- * last Modified: 06.03.2010 : 11:48
+ * last Modified: 10.04.2010 : 12:15
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,12 @@
 #include "boolean.h"
 
 #include <string.h>
+#include <time.h>
 
 HighscoreFile hiscores;
 
 BOOLEAN hiscore_entry = FALSE;
+char buffer[]="YYYY-MM-DD hh:mm";
 
 HighscoreEntry empty =
 {
@@ -162,4 +164,18 @@ tChecksum Highscore_CalculateChecksum()
 {
 	/* TODO: implement table driven CRC-8 algorithm */
 	return 0;
+}
+
+/* uses the curent system time to create a name string with the format YYYY-MM-DD hh:mm */
+char* Highscore_GetNameFromTimestamp()
+{
+	time_t now;
+	struct tm *timestamp;
+
+	time(&now);	/* get current time */
+	timestamp = localtime(&now); /* convert time from accumulated seconds into a field of values */
+
+	sprintf(buffer, "%4d-%02d-%02d %02d:%02d", (timestamp->tm_year)+1900, (timestamp->tm_mon)+1, timestamp->tm_mday, timestamp->tm_hour, timestamp->tm_min);
+
+	return(buffer);
 }
