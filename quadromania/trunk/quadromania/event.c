@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.c - implements the input event API
- * last Modified: 09.02.2010 : 17:42
+ * last Modified: 14.04.2010 : 19:04
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,15 @@
 
 /* data structures... */
 MOUSE mouse;
-BOOLEAN ESCpressed       = FALSE;
-BOOLEAN QUITrequest      = FALSE;
-Uint8 debounce_tmr_mouse = 0;
-Uint8 debounce_tmr_keys  = 0;
+BOOLEAN ESCpressed          = FALSE;
+BOOLEAN QUITrequest         = FALSE;
+Uint8 debounce_tmr_mouse    = 0;
+Uint8 debounce_tmr_keys     = 0;
+
+#if(HAVE_JOYSTICK != _NO_JOYSTICK)
+Uint8 debounce_tmr_joystick = 0;
+SDL_Joystick *CurrentJoystick;
+#endif
 
 /*************
  * CONSTANTS *
@@ -53,6 +58,10 @@ void Event_Init()
 	mouse.clicked = FALSE;
 	debounce_tmr_mouse = Event_Debounce_timeslices;
 	debounce_tmr_keys  = Event_Debounce_timeslices;
+
+#if(HAVE_JOYSTICK != _NO_JOYSTICK)
+	Joystick_Init();
+#endif
 }
 
 /* processes SDL Events and updates the event data structures */
@@ -94,6 +103,17 @@ void Event_ProcessInput()
 				}
 			}
 			break;
+	   #if(HAVE_JOYSTICK != _NO_JOYSTICK)
+		case SDL_JOYBUTTONDOWN:
+			if(event.jbutton.button == JOYSTICK_BUTTON_ESC)
+			{
+				ESCpressed = TRUE;
+#ifdef _DEBUG
+				fprintf(stderr,"Quadromania: Joystick ESC pressed\n");
+#endif
+			}
+			break;
+	   #endif
 			/* SDL_QUIT event (window close) */
 		case SDL_QUIT:
 			QUITrequest = TRUE;
@@ -110,6 +130,10 @@ void Event_ProcessInput()
 
 	if(debounce_tmr_keys > 0)
 		debounce_tmr_keys--;
+   #if(HAVE_JOYSTICK != _NO_JOYSTICK)
+	if(debounce_tmr_joystick > 0)
+			debounce_tmr_joystick--;
+   #endif
 }
 
 /* has a program shutdown been requested? */
@@ -162,3 +186,55 @@ void Event_DebounceKeys()
 	debounce_tmr_keys = Event_Debounce_timeslices;
 	ESCpressed = FALSE;
 }
+
+#if(HAVE_JOYSTICK != _NO_JOYSTICK)
+/* initializes joysticks */
+void Joystick_Init()
+{
+#ifdef _DEBUG
+	Uint8 i;
+#endif
+	int JoystickCount;
+
+	/* Initialize the joystick subsystem */
+	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+
+	JoystickCount = SDL_NumJoysticks();
+#ifdef _DEBUG
+	fprintf(stderr,"Quadromania: %i joysticks found\n", JoystickCount);
+
+	if(JoystickCount > 0)
+	{
+		for(i = 0; i< JoystickCount; i++)
+		{
+			CurrentJoystick = SDL_JoystickOpen(i);
+			if(CurrentJoystick == NULL)
+			{
+				fprintf(stderr,"Quadromania: Unable to open joystick %i.\n", i+1);
+			}
+			else
+			{
+				fprintf(stderr,"Quadromania: Joystick %i: %s\n", i+1, SDL_JoystickName(i));
+				SDL_JoystickClose(CurrentJoystick);
+				CurrentJoystick = NULL;
+			}
+		}
+	}
+#endif
+
+	/* try to use first available joystick */
+	CurrentJoystick = SDL_JoystickOpen(0);
+#ifdef _DEBUG
+	if(CurrentJoystick == NULL)
+	{
+				fprintf(stderr,"Quadromania: Unable to open joystick %i.\n", 1);
+	}
+	else
+	{
+				fprintf(stderr,"Quadromania: Joystick %i in use: %s\n", 1, SDL_JoystickName(0));
+	}
+
+#endif
+
+}
+#endif
