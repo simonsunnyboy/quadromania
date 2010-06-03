@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 05.03.2010 : 17:42
+# last Modified: 03.06.2010 : 15:11
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,6 +24,12 @@
 #
 
 CFLAGS=`sdl-config --cflags` -W -Wall -ggdb -O3
+
+# determine whether a DEBUG build is desired
+ifeq ($(DEBUG),1)
+CFLAGS += -D_DEBUG
+endif
+
 SDL_LIB=`sdl-config --libs`
 
 # the compiler to use - please use the GNU C Compiler if possible
