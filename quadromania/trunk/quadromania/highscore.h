@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: highscore.h - header file for the highscore API
- * last Modified: 10.04.2010 : 12:11
+ * last Modified: 03.06.2010 : 15:52
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,25 +41,26 @@
 	 **********/
 
 	#define HIGHSCORE_NO_ENTRY                HIGHSCORE_NR_OF_ENTRIES_PER_TABLE
+    #define HIGHSCORE_FILENAME                "quadromania.scores"
 
 	/**************************
 	 * DATA TYPE DECLARATIONS *
 	 **************************/
 
-	typedef Uint8 tChecksum;
+	typedef Uint8 tChecksum; /* datatype to abstract checksums */
 
 	typedef struct
 	{
 		Uint32 score;
 		char name[HIGHSCORE_MAX_LEN_OF_NAME];
-	} HighscoreEntry;
+	} HighscoreEntry; /* a single highscore entry */
 
 	typedef struct
 	{
-		tChecksum checksum;  /* */
+		tChecksum checksum;  /* main checksum of the highscore file */
 		HighscoreEntry Entry[HIGHSCORE_NR_OF_TABLES][HIGHSCORE_NR_OF_ENTRIES_PER_TABLE];
-		tChecksum checksum_;
-	} HighscoreFile;
+		tChecksum checksum_; /* 2bit's complement of the checksum */
+	} HighscoreFile; /* the highscore data as a binary file to be laoded and saved to disk */
 
 	/**************
 	 * PROTOTYPES *
