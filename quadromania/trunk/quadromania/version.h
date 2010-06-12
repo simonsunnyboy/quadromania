@@ -27,6 +27,6 @@
 	#define __VERSION_H
 
     #define PACKAGE "quadromania"
-    #define VERSION "quadromania June 03th 2010"
+    #define VERSION "quadromania June 12th 2010"
 
 #endif

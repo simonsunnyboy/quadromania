@@ -54,6 +54,8 @@ board with the fewest number of turns.
 If your score is good enough, it will be listed in the highscore table
 with the current timestamp.
 
+Highscores are saved to disk and loaded again at next start of the game.
+
 Contact information
 ===================
 

@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: highscore.h - header file for the highscore API
- * last Modified: 03.06.2010 : 15:52
+ * last Modified: 12.06.2010 : 18:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,6 @@
 	 * DATA TYPE DECLARATIONS *
 	 **************************/
 
-	typedef Uint8 tChecksum; /* datatype to abstract checksums */
-
 	typedef struct
 	{
 		Uint32 score;
@@ -57,9 +55,7 @@
 
 	typedef struct
 	{
-		tChecksum checksum;  /* main checksum of the highscore file */
 		HighscoreEntry Entry[HIGHSCORE_NR_OF_TABLES][HIGHSCORE_NR_OF_ENTRIES_PER_TABLE];
-		tChecksum checksum_; /* 2bit's complement of the checksum */
 	} HighscoreFile; /* the highscore data as a binary file to be laoded and saved to disk */
 
 	/**************
