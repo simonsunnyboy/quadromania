@@ -43,5 +43,5 @@ Known Bugs
 
 4. The game cannot be interrupted on the Wiz yet.
 
-5. Highscores are not yet saved to SD/NAND.
+5. Highscores are saved to the game/quadromania/ folder on your SD/NAND.
 

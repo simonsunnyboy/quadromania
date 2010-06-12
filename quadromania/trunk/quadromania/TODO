@@ -1,7 +1,6 @@
 TODO list for quadromania
 	
 	* add music and sound effects (module Audio)	
-	* fix copyright graphics
 	* add optional joystick polling for GP2X Wiz to act as keyboard input for terminating the game
 	* add Wiz volume control (when Audio module is implemented)
 	* add highscore management for all levels and game settings
