@@ -2,8 +2,8 @@
  * Quadromania
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
- * File: version.h - versioning information of the package
- * last Modified: 13.06.2010 : 17:57
+ * File: sound.c - implements the sound and music API
+ * last Modified: 13.06.2010 : 18:05
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,42 @@
  *
  */
 
-#ifndef __VERSION_H
-	#define __VERSION_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    #define PACKAGE "quadromania"
-    #define VERSION "quadromania June 13th 2010"
+#include "sound.h"
+#include "datatypes.h"
+#include "boolean.h"
 
-#endif
+/* data structures... */
+BOOLEAN sound_initialized = FALSE;
+
+/*************
+ * FUNCTIONS *
+ *************/
+
+/* initialize sound subsystem */
+void Sound_Init()
+{
+	/* TODO: do actual sound system init here */
+	atexit(Sound_Exit);
+	return;
+}
+
+/* terminate sound subsystem properly */
+void Sound_Exit()
+{
+	sound_initialized = FALSE;
+	return;
+}
+
+/* play a sound by symbolic name */
+void Sound_PlayEffect(SoundEffect snd)
+{
+	/* TODO: add actual sound effect replay */
+	if(sound_initialized == TRUE)
+	{
+	}
+	return;
+}

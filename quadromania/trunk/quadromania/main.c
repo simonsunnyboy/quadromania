@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 10.04.2010 : 12:09
+ * last Modified: 13.06.2010 : 18:06
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "datatypes.h"
 #include "random.h"
 #include "graphics.h"
+#include "sound.h"
 #include "quadromania.h"
 #include "highscore.h"
 #include "boolean.h"
@@ -117,6 +118,8 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	Random_InitSeed();
 	/* load highscores from disk */
 	Highscore_LoadTable();
+	/* initialize sound system */
+	Sound_Init();
 	/* initialize graphics module... */
 	if(Graphics_Init(fullscreen))
 	{
@@ -190,6 +193,10 @@ void MainHandler()
 				if (Event_GetMouseButton() == 1)
 				{
 					menu = GUI_GetClickedMenuEntry();
+					if(menu != MENU_UNDEFINED)
+					{
+						Sound_PlayEffect(SOUND_MENU);
+					}
 					switch (menu)
 					{
 					case MENU_START_GAME:
@@ -288,6 +295,8 @@ void MainHandler()
 #ifdef _DEBUG
 						fprintf(stderr,"Score: %d\n",score);
 #endif
+						/* make noise */
+						Sound_PlayEffect(SOUND_TURN);
 						/* check for unsuccessful end*/
 						if (Quadromania_IsTurnLimithit())
 							status = GAMEOVER;
@@ -308,6 +317,7 @@ void MainHandler()
 			{
 				oldstatus = status;
 				Graphics_DrawWinMessage();
+				Sound_PlayEffect(SOUND_WIN);
 			}
 
 			if (Event_MouseClicked() == TRUE)
@@ -322,12 +332,13 @@ void MainHandler()
 			{
 				oldstatus = status;
 				Graphics_DrawGameoverMessage();
+				Sound_PlayEffect(SOUND_LOOSE);
 			}
 
 			if (Event_MouseClicked() == TRUE)
 			{
 				Event_DebounceMouse();
-				status = HIGHSCORE_ENTRY;
+				status = SHOW_HIGHSCORES; /* no highscore entry in case of all turns are used up */
 			}
 			break;
 		case HIGHSCORE_ENTRY:

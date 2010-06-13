@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile.wiz - Makefile for building quadromania for a GP2X Wiz target 
-# last Modified: 03.06.2010 : 15:15
+# last Modified: 13.06.2010 : 18:04
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ LIBS = -lSDL_image -lpng -lz
 CC = $(TOOLCHAINDIR)/bin/arm-openwiz-linux-gnu-gcc
 
 # object files needed to link the executable
-OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o highscore.o
+OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o highscore.o sound.o
 # name of executable
 EXECUTABLE = quadromania.gpe
 	
@@ -63,6 +63,8 @@ gui.o: gui.c gui.h graphics.o
 random.o: random.c random.h
 
 quadromania.o: quadromania.c quadromania.h version.h boolean.h
+
+sound.o: sound.c sound.h version.h
 
 event.o: event.c event.h boolean.h
 
