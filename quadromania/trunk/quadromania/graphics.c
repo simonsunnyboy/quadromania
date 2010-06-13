@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 06.03.2010 : 11:57
+ * last Modified: 13.06.2010 : 18:20
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -326,7 +326,7 @@ BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 #endif
 
 	/* did our graphics load properly? (remember NULL pointers for surfaces means "no valid surface data loaded" */
-	if((textures==NULL)||(frame==NULL)||(dots==NULL)||(titel==NULL)||(copyright==NULL))
+	if((textures==NULL)||(frame==NULL)||(dots==NULL)||(titel==NULL)||(copyright==NULL)||(font==NULL)||(window_icon==NULL))
 	{
 		fprintf (stderr, "%s initgraphics(): One or more image files failed to load properly!\n\n",PACKAGE);
 		exit(2);
