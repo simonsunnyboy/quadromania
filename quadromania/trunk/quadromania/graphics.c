@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 13.06.2010 : 18:20
+ * last Modified: 25.06.2010 : 21:55
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,6 +266,11 @@ void Graphics_DrawGameoverMessage()
 /* to be able to use the graphics module, initialize it first... */
 BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 {
+#if(USE_HARDWARESURFACE == 1)
+#define SURFACE_TYPE  SDL_HWSURFACE
+#else
+#define SURFACE_TYPE  SDL_SWSURFACE
+#endif
 	/* initialize SDL...  */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -281,7 +286,7 @@ BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 	/* Set an appropriate 16-bit video mode. */
 #if(SCREENRES == _HIGH)
 	if ((screen = SDL_SetVideoMode(640, 480, 16,
-			((set_fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SDL_HWSURFACE
+			((set_fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SURFACE_TYPE
 					| SDL_DOUBLEBUF)) == NULL)
 	{
 		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
@@ -290,7 +295,7 @@ BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 	}
 #elif(SCREENRES == _LOW)
 	if ((screen = SDL_SetVideoMode(320, 240, 16, ((set_fullscreen == TRUE) ? SDL_FULLSCREEN
-									: 0) | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
+									: 0) | SURFACE_TYPE | SDL_DOUBLEBUF)) == NULL)
 	{
 		fprintf(stderr, "%s\n\nUnable to set 320x240x16 video mode: %s\n",
 				VERSION, SDL_GetError());

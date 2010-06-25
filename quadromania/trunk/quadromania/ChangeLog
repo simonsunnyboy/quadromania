@@ -1,3 +1,6 @@
+25.06.2010:
+	- made selection of SDL_Surface type more flexible: USE_HARDWARESURFACE
+
 12.06.2010:
 	- dropped highscore checksumming
 	- save and load highscores to and from disk
