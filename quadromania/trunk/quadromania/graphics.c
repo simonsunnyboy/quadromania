@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 25.06.2010 : 21:55
+ * last Modified: 26.06.2010 : 15:47
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,11 +266,29 @@ void Graphics_DrawGameoverMessage()
 /* to be able to use the graphics module, initialize it first... */
 BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 {
-#if(USE_HARDWARESURFACE == 1)
-#define SURFACE_TYPE  SDL_HWSURFACE
+	/* determine video scaling */
+#if(SCREENRES == _HIGH)
+	const int screen_factor = 2;
+#elif(SCREENRES == _LOW)
+	const int screen_factor = 1;
 #else
-#define SURFACE_TYPE  SDL_SWSURFACE
+#error screen resolution is not properly defined
 #endif
+
+	/* determine bit per pixel */
+	const int SDL_video_bitdepth = 16;
+
+	/* determine screen settings like fullscreen, windowed, etc.... */
+	Uint32 SDL_video_flags = ((set_fullscreen == TRUE) ? SDL_FULLSCREEN : 0);
+#if(USE_HARDWARESURFACE == 1)
+	SDL_video_flags |= SDL_HWSURFACE;
+#else
+ 	SDL_video_flags |= SDL_SWSURFACE;
+#endif
+#if(USE_DOUBLEBUFFEREDSURFACE == 1)
+	SDL_video_flags |= SDL_DOUBLEBUF;
+#endif
+
 	/* initialize SDL...  */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -284,28 +302,11 @@ BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 	Graphics_SetWindowIcon(); /* set window icon */
 
 	/* Set an appropriate 16-bit video mode. */
-#if(SCREENRES == _HIGH)
-	if ((screen = SDL_SetVideoMode(640, 480, 16,
-			((set_fullscreen == TRUE) ? SDL_FULLSCREEN : 0) | SURFACE_TYPE
-					| SDL_DOUBLEBUF)) == NULL)
+	if ((screen = SDL_SetVideoMode((320 * screen_factor), (240 * screen_factor), SDL_video_bitdepth, SDL_video_flags)) == NULL)
 	{
-		fprintf(stderr, "%s\n\nUnable to set 640x480x16 video mode: %s\n",
-				VERSION, SDL_GetError());
+		fprintf(stderr, "%s\n\nUnable to set %dx%dx%d video mode: %s\n",VERSION, (320 * screen_factor), (240 * screen_factor), SDL_video_bitdepth, SDL_GetError());
 		return (FALSE);
 	}
-#elif(SCREENRES == _LOW)
-	if ((screen = SDL_SetVideoMode(320, 240, 16, ((set_fullscreen == TRUE) ? SDL_FULLSCREEN
-									: 0) | SURFACE_TYPE | SDL_DOUBLEBUF)) == NULL)
-	{
-		fprintf(stderr, "%s\n\nUnable to set 320x240x16 video mode: %s\n",
-				VERSION, SDL_GetError());
-		return (FALSE);
-	}
-#else
-#error screen resolution is not properly defined
-	return(FALSE);
-#endif
-
 	/* set window title.. */
 	SDL_WM_SetCaption(VERSION, NULL);
 

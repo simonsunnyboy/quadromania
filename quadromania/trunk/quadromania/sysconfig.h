@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sysconfig.h - target system specific settings at compile time
- * last Modified: 25.06.2010 : 21:56
+ * last Modified: 26.06.2010 : 15:54
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,8 @@
 		#define SCREENRES 					_LOW
 		/* use SDL hardware surface for the screen? */
 		#define USE_HARDWARESURFACE         1
+        /* use SDL doublebuffered surface for the screen? */
+        #define USE_DOUBLEBUFFEREDSURFACE   1
 		#define HAVE_WINDOWED_MODE          0
 		#define HAVE_MOUSE_POINTER          0
 		#define HAVE_SDL_DATATYPES          1
@@ -50,6 +52,8 @@
 		#define SCREENRES 					_HIGH
 		/* use SDL hardware surface for the screen? */
 		#define USE_HARDWARESURFACE         1
+		/* use SDL doublebuffered surface for the screen? */
+        #define USE_DOUBLEBUFFEREDSURFACE   1
 		#define HAVE_WINDOWED_MODE          1
 		#define HAVE_MOUSE_POINTER          1
         #define HAVE_SDL_DATATYPES          1

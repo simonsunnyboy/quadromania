@@ -1,3 +1,7 @@
+26.06.2010:
+	- made selection of SDL_Surface type even more flexible: USE_DOUBLEBUFFEREDSURFACE
+	- slight rewrote of SDL graphics init routine
+
 25.06.2010:
 	- made selection of SDL_Surface type more flexible: USE_HARDWARESURFACE
 	- added PHONY targets to the Makefiles
