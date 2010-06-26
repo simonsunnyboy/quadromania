@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sysconfig.h - target system specific settings at compile time
- * last Modified: 26.06.2010 : 15:54
+ * last Modified: 26.06.2010 : 16:03
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,15 @@
 		#define USE_HARDWARESURFACE         1
         /* use SDL doublebuffered surface for the screen? */
         #define USE_DOUBLEBUFFEREDSURFACE   1
+		/* run in window or full screen? */
 		#define HAVE_WINDOWED_MODE          0
+		/* touch screen or show mouse pointer? */
 		#define HAVE_MOUSE_POINTER          0
+		/* use SDL datatypes? */
 		#define HAVE_SDL_DATATYPES          1
+		/* type of joystick for special button mappings? */
 		#define HAVE_JOYSTICK               _GP2X_JOYSTICK
+		/* same highscores etc to $HOME ? */
         #define USE_HOMEDIR                 0
 	#else
 		/* default SDL target for use with windowing GUI, e.q. X11/Windows/Mac OS */
@@ -54,10 +59,15 @@
 		#define USE_HARDWARESURFACE         1
 		/* use SDL doublebuffered surface for the screen? */
         #define USE_DOUBLEBUFFEREDSURFACE   1
+		/* run in window or full screen? */
 		#define HAVE_WINDOWED_MODE          1
+		/* touch screen or show mouse pointer? */
 		#define HAVE_MOUSE_POINTER          1
+		/* use SDL datatypes? */
         #define HAVE_SDL_DATATYPES          1
+		/* type of joystick for special button mappings? */
         #define HAVE_JOYSTICK               _DEFAULT_JOYSTICK
+		/* same highscores etc to $HOME ? */
 		#define USE_HOMEDIR                 1
 	#endif
 
