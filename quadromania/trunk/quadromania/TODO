@@ -6,4 +6,5 @@ TODO list for quadromania
 	* add highscore management for all levels and game settings
 	* add more ports (old GP2X, Atari, Mac)
 	* add splash screen
+	* move source files and Makefiles into a src/ subfolder (including local SVN)
 	
