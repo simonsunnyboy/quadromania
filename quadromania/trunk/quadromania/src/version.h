@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: version.h - versioning information of the package
- * last Modified: 26.06.2010 : 15:33
+ * last Modified: 27.06.2010 : 14:45
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,6 @@
 	#define __VERSION_H
 
     #define PACKAGE "quadromania"
-    #define VERSION "quadromania June 26th 2010"
+    #define VERSION "quadromania June 27th 2010"
 
 #endif

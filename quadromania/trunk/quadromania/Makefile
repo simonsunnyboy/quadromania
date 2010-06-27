@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 27.06.2010 : 08:48
+# last Modified: 27.06.2010 : 14:58
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ EXECUTABLE = quadromania
 all: quadromania
 
 quadromania: $(OBJS)
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJS) $(SDL_LIB) -lSDL_image
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJS) $(SDL_LIB) -lSDL_image -lSDL_mixer
 
 main.o: main.c main.h version.h event.h gui.h
 

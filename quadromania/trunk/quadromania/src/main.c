@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 13.06.2010 : 18:06
+ * last Modified: 27.06.2010 : 15:04
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,14 +193,11 @@ void MainHandler()
 				if (Event_GetMouseButton() == 1)
 				{
 					menu = GUI_GetClickedMenuEntry();
-					if(menu != MENU_UNDEFINED)
-					{
-						Sound_PlayEffect(SOUND_MENU);
-					}
 					switch (menu)
 					{
 					case MENU_START_GAME:
 						/* "start a new game" ? */
+						Sound_PlayEffect(SOUND_MENU);
 						status = GAME;
 						Quadromania_InitPlayfield(
 								Quadromania_GetRotationsPerLevel(level),
@@ -210,6 +207,7 @@ void MainHandler()
 						break;
 					case MENU_CHANGE_NR_OF_COLORS:
 						/* "Select Colors" ? */
+						Sound_PlayEffect(SOUND_MENU);
 						status = SETUPCHANGED;
 						++maxrotations;
 						if (maxrotations > 4)
@@ -218,6 +216,7 @@ void MainHandler()
 
 					case MENU_CHANGE_NR_OF_ROTATIONS:
 						/* "Select number of rotations" ? */
+						Sound_PlayEffect(SOUND_MENU);
 						status = SETUPCHANGED;
 						++level;
 						if (level > HIGHSCORE_NR_OF_TABLES)
@@ -225,13 +224,16 @@ void MainHandler()
 						break;
 					case MENU_INSTRUCTIONS:
 						/* "Instructions" ? */
+						Sound_PlayEffect(SOUND_MENU);
 						status = INSTRUCTIONS;
 						break;
 					case MENU_HIGHSCORES:
 						/* Highscores? */
+						Sound_PlayEffect(SOUND_MENU);
 						status = SHOW_HIGHSCORES;
 						break;
 					case MENU_QUIT:
+						Sound_PlayEffect(SOUND_MENU);
 						status = QUIT;
 						break;
 					default:

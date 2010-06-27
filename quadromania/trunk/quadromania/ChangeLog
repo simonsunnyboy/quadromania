@@ -1,3 +1,6 @@
+27.06.2010:
+	- moved sources to src/ directory
+	- added initial sound sound support and actual audiofiles
 26.06.2010:
 	- made selection of SDL_Surface type even more flexible: USE_DOUBLEBUFFEREDSURFACE
 	- slight rewrote of SDL graphics init routine

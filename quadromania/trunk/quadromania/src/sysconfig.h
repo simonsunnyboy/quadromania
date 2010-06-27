@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sysconfig.h - target system specific settings at compile time
- * last Modified: 26.06.2010 : 16:38
+ * last Modified: 27.06.2010 : 14:47
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,8 @@
 		#define HAVE_SDL_DATATYPES          1
 		/* type of joystick for special button mappings? */
 		#define HAVE_JOYSTICK               _GP2X_JOYSTICK
+		/* enable sound via SDL_mixer ? */
+		#define HAVE_AUDIO                  1
 		/* same highscores etc to $HOME ? */
         #define USE_HOMEDIR                 0
 	#elif(defined __DINGUX)
@@ -72,6 +74,8 @@
 		#define HAVE_SDL_DATATYPES          1
 		/* type of joystick for special button mappings? */
 		#define HAVE_JOYSTICK               _DEFAULT_JOYSTICK
+		/* enable sound via SDL_mixer ? */
+		#define HAVE_AUDIO                  0
 		/* same highscores etc to $HOME ? */
         #define USE_HOMEDIR                 1
 	#else
@@ -89,6 +93,8 @@
         #define HAVE_SDL_DATATYPES          1
 		/* type of joystick for special button mappings? */
         #define HAVE_JOYSTICK               _DEFAULT_JOYSTICK
+		/* enable sound via SDL_mixer ? */
+		#define HAVE_AUDIO                  1
 		/* same highscores etc to $HOME ? */
 		#define USE_HOMEDIR                 1
 	#endif

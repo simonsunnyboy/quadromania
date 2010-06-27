@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sound.h - header file for the sound and music API
- * last Modified: 14.04.2010 : 18:02
+ * last Modified: 27.06.2010 : 17:47
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 
 #ifndef __SOUND_H
 #define __SOUND_H
+
+	#include "sysconfig.h"
 
 	/**************************
 	 * DATA TYPE DECLARATIONS *

@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile.wiz - Makefile for building quadromania for a GP2X Wiz target 
-# last Modified: 27.06.2010 : 08:50
+# last Modified: 27.06.2010 : 15:15
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ CFLAGS += -D_DEBUG
 endif
 
 # special libs needed for linking
-LIBS = -lSDL_image -lpng -lz
+LIBS = -lSDL_image -lpng -lz -lSDL_mixer
 
 # the compiler to use - please use the GNU C Compiler if possible
 CC = $(TOOLCHAINDIR)/bin/arm-openwiz-linux-gnu-gcc
