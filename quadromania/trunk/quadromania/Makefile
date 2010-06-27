@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 26.06.2010 : 23:03
+# last Modified: 27.06.2010 : 08:48
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ CC=gcc
 
 # object files needed to link the executable
 OBJS = main.o graphics.o event.o random.o SFont.o quadromania.o gui.o highscore.o sound.o
+# sources are located here
+VPATH = src
 # name of executable
 EXECUTABLE = quadromania
 	
