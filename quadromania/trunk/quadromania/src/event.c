@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.c - implements the input event API
- * last Modified: 14.04.2010 : 19:04
+ * last Modified: 29.06.2010 : 18:48
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "datatypes.h"
 #include "event.h"
 #include "boolean.h"
+
+#include "sound.h"
 
 /* data structures... */
 MOUSE mouse;
@@ -98,6 +100,20 @@ void Event_ProcessInput()
 					/* ESC pressed? */
 					ESCpressed = TRUE;
 					break;
+				case SDLK_KP_PLUS:
+#if(defined __DINGUX)
+				case SDLK_BACKSPACE:
+#endif
+					/* keypad + ? */
+					Sound_IncreaseVolume();
+					break;
+				case SDLK_KP_MINUS:
+#if(defined __DINGUX)
+				case SDLK_TAB:
+#endif
+					/* keypad - ? */
+					Sound_DecreaseVolume();
+					break;
 				default:
 					break;
 				}
@@ -105,13 +121,25 @@ void Event_ProcessInput()
 			break;
 	   #if(HAVE_JOYSTICK != _NO_JOYSTICK)
 		case SDL_JOYBUTTONDOWN:
-			if(event.jbutton.button == JOYSTICK_BUTTON_ESC)
+			if (event.jbutton.button == JOYSTICK_BUTTON_ESC)
 			{
 				ESCpressed = TRUE;
 #ifdef _DEBUG
 				fprintf(stderr,"Quadromania: Joystick ESC pressed\n");
 #endif
 			}
+			break;
+		case SDL_JOYBUTTONUP:
+#if(HAVE_JOYSTICK ==_GP2X_JOYSTICK)
+			if (event.jbutton.button == GP2X_BUTTON_VOLUP)
+			{
+				Sound_IncreaseVolume();
+			}
+			if (event.jbutton.button == GP2X_BUTTON_VOLDOWN)
+			{
+				Sound_DecreaseVolume();
+			}
+#endif
 			break;
 	   #endif
 			/* SDL_QUIT event (window close) */

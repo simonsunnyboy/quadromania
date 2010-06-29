@@ -1,10 +1,10 @@
 TODO list for quadromania
 	
-	* add music and sound effects (module Audio)	
-	* add optional joystick polling for GP2X Wiz to act as keyboard input for terminating the game
-	* add Wiz volume control (when Audio module is implemented)
+	* add music (module Audio)
+	* save and restore volume setting from disk
+	* add keyboard/joystick controlled extra cursors for platforms without touchscreen like the Dingoo A320	
 	* add highscore management for all levels and game settings
 	* add more ports (old GP2X, Atari, Mac)
 	* add splash screen
-	* move source files and Makefiles into a src/ subfolder (including local SVN)
+
 	

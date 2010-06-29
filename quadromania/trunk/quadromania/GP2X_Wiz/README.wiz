@@ -20,6 +20,13 @@ and a suitable .ini file.
 After unzipping to the SD Card, quadromania should show up on your Wiz menu
 as usual. Tap the icon to launch the game.
 
+Button mapping
+==============
+
+Use the volume buttons to alter volume of audio effects and effects.
+
+Press MENU to abort a game or to quit Quadromania from the main menu.  
+
 Firmware versions
 =================
 
@@ -39,9 +46,5 @@ Known Bugs
                   With a proper calibrated display, stylus clicks are
                   accurate within limits.
 
-3. There is currently no QUIT option via keypresses.
-
-4. The game cannot be interrupted on the Wiz yet.
-
-5. Highscores are saved to the game/quadromania/ folder on your SD/NAND.
+3. Highscores are saved to the game/quadromania/ folder on your SD/NAND.
 

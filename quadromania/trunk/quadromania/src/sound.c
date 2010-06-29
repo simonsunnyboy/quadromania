@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sound.c - implements the sound and music API
- * last Modified: 27.06.2010 : 14:50
+ * last Modified: 29.06.2010 : 19:14
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@
 
 /* data structures... */
 BOOLEAN sound_initialized = FALSE;
+/* the current mixer volume */
+Uint8 sound_volume;
 
 #if(HAVE_AUDIO == 1)
 /* actual mixer chunks for our sound effects */
@@ -75,6 +77,10 @@ void Sound_Init()
 		sound_turn  = Mix_LoadWAV("data/sound/turn.wav");
 		sound_win   = Mix_LoadWAV("data/sound/win.wav");
 		sound_loose = Mix_LoadWAV("data/sound/loose.wav");
+
+		/* set default volume */
+		sound_volume = Sound_VolumeDefault;
+		Sound_SetVolume(sound_volume);
 
 		sound_initialized = TRUE;
 	}
@@ -124,5 +130,40 @@ void Sound_PlayEffect(SoundEffect snd)
 		}
 #endif
 	}
+	return;
+}
+
+/* set the actual sound mixer volume according to the given volume in percent */
+void Sound_SetVolume(Uint8 volume)
+{
+	Uint8 calculated_volume;
+	if(volume > 100)
+		volume = 100;
+	calculated_volume = (Uint8)(((Uint16)volume * MIX_MAX_VOLUME)/100);
+	Mix_Volume(-1, calculated_volume);
+	return;
+}
+
+/* increase sound mixer volume by 10% */
+void Sound_IncreaseVolume()
+{
+	if(sound_volume < 100)
+		sound_volume = sound_volume + 10;
+	Sound_SetVolume(sound_volume);
+#ifdef _DEBUG
+	fprintf(stderr,"Volume increased....\n");
+#endif
+	return;
+}
+
+/* decrease sound mixer volume by 10% */
+void Sound_DecreaseVolume()
+{
+	if(sound_volume > 0)
+		sound_volume = sound_volume - 10;
+#ifdef _DEBUG
+	fprintf(stderr,"Volume decreased....\n");
+#endif
+	Sound_SetVolume(sound_volume);
 	return;
 }

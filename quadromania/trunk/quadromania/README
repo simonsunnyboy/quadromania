@@ -19,6 +19,8 @@ Currently quadromania is known to run on the following target platforms:
 
 	* Linux/Windows 32 with libSDL
 	* GP2X Wiz
+	* Dingoo A320 with dingux Linux system
+	* Atari MinT (compilable and running but too slow to be playable)
 
 
 Installation
@@ -26,6 +28,13 @@ Installation
 
 For installation notes, see the file INSTALL or the port specific
 README.
+
+Key mapping
+==============
+
+Use Numpad + and - to alter the volume of audio effects and effects.
+
+Use ESC to abort a game or quit the application.
 
 The Rules
 =========
