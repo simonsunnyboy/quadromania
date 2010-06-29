@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sound.c - implements the sound and music API
- * last Modified: 29.06.2010 : 19:14
+ * last Modified: 29.06.2010 : 19:24
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,16 @@ Mix_Chunk *sound_loose  = NULL;
 /*************
  * CONSTANTS *
  *************/
+	
+/* volume in percent */
+const Uint8 Sound_VolumeDefault = 100;
+/* sample rate */
 const int audio_rate = 22050;
+/* audio data format for internal use */
 const Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
+/* number of channels */
 const int audio_channels = 2;
+/* size of audio buffers */
 const int audio_buffers = 4096;
 
 /*************

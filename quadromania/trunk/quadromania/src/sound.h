@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: sound.h - header file for the sound and music API
- * last Modified: 29.06.2010 : 19:03
+ * last Modified: 29.06.2010 : 19:23
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,6 @@
 
 	#include "datatypes.h"
 	#include "sysconfig.h"
-
-	/*************
-	 * CONSTANTS *
-	 *************/
-	/* volume in percent */
-	const Uint8 Sound_VolumeDefault = 100;
 
 	/**************************
 	 * DATA TYPE DECLARATIONS *
