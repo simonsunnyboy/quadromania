@@ -1,6 +1,5 @@
 TODO list for quadromania
 	
-	* add music (module Audio)
 	* save and restore volume setting from disk
 	* add keyboard/joystick controlled extra cursors for platforms without touchscreen like the Dingoo A320	
 	* add highscore management for all levels and game settings
