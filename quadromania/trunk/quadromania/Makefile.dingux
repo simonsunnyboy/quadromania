@@ -3,7 +3,7 @@
 # (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
 #
 # File: Makefile
-# last Modified: 03.07.2010 : 18:12 (zLouD)
+# last Modified: 03.07.2010 : 18:22 (zLouD)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -86,17 +86,17 @@ clean:
 	
 # create a distribution zip for the Dingoo A320
 dist: $(EXECUTABLE)
-	mkdir quadromania/
-	mkdir quadromania/data/
-	mkdir quadromania/data/sound/
-	mkdir quadromania/data/lowres/
-	mkdir quadromania/data/icons/
-	cp data/lowres/*.png quadromania/data/lowres/
-	cp data/icons/*.png quadromania/data/icons/
-	cp data/sound/*.wav quadromania/data/sound/
-	cp data/sound/*.ogg quadromania/data/sound/
-	cp TODO README ChangeLog AUTHORS COPYING quadromania/
-	cp $(EXECUTABLE) quadromania/
-	cp Dingux/quadromania.dge quadromania/
-	cp Dingux/README.dingux quadromania
-	zip -rm quadromania-dingux.zip quadromania/
+	mkdir quadromania-dingux/
+	mkdir quadromania-dingux/data/
+	mkdir quadromania-dingux/data/sound/
+	mkdir quadromania-dingux/data/lowres/
+	mkdir quadromania-dingux/data/icons/
+	cp data/lowres/*.png quadromania-dingux/data/lowres/
+	cp data/icons/*.png quadromania-dingux/data/icons/
+	cp data/sound/*.wav quadromania-dingux/data/sound/
+	cp data/sound/*.ogg quadromania-dingux/data/sound/
+	cp TODO README ChangeLog AUTHORS COPYING quadromania-dingux/
+	cp $(EXECUTABLE) quadromania-dingux/
+	cp Dingux/quadromania.dge quadromania-dingux/
+	cp Dingux/README.dingux quadromania-dingux/
+	zip -rm quadromania-dingux.zip quadromania-dingux/
