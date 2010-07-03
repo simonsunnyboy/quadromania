@@ -1,4 +1,4 @@
-quadromania
+quadromania v0.5
 
 (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de>
 a game by ASM Software (http://www.asmsoftware.de/)
@@ -47,4 +47,6 @@ Known Bugs
                   accurate within limits.
 
 3. Highscores are saved to the game/quadromania/ folder on your SD/NAND.
+
+4. Volume levels - this is not saved and restored to disk yet.
 
