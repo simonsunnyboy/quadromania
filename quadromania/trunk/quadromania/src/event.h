@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.h - symbolic constants, data types and function prototypes for event handling
- * last Modified: 14.04.2010 : 18:44
+ * last Modified: 04.07.2010 : 18:23
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@
 
 		#define JOYSTICK_BUTTON_ESC         GP2X_BUTTON_MENU
 	#else
-		#define JOYSTICK_BUTTON_ESC         1
+		#define JOYSTICK_BUTTON_ESC         3
 	#endif
 #endif
 
@@ -70,6 +70,15 @@
 		BOOLEAN clicked;
 	} MOUSE;
 
+	typedef struct
+	{
+		BOOLEAN up;
+		BOOLEAN down;
+		BOOLEAN left;
+		BOOLEAN right;
+		BOOLEAN button;
+	} DPAD;
+
 	/**************
 	 * PROTOTYPES *
 	 **************/
@@ -81,6 +90,13 @@
 	Uint16 Event_GetMouseY(void);
 	Uint8 Event_GetMouseButton(void);
 	BOOLEAN Event_MouseClicked(void);
+	BOOLEAN Event_GetDpadUp(void);
+	BOOLEAN Event_GetDpadDown(void);
+	BOOLEAN Event_GetDpadLeft(void);
+	BOOLEAN Event_GetDpadRight(void);
+	BOOLEAN Event_GetDpadButton(void);
+	BOOLEAN Event_IsDpadPressed(void);
+	void Event_DebounceDpad(void);
 	void Event_DebounceMouse(void);
 	void Event_DebounceKeys(void);
 
