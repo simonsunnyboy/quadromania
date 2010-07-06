@@ -38,9 +38,10 @@ If any compatibility issues will occur, this will be noted here.
 Known Bugs
 ==========
 
-1. Tearing - this is due the buggy SDL lib currently shipping with the Wiz
-             You may cure this by copy a fixed libSDL-1.2.0.so to the
-             game directory.
+1. Tearing - this should not happen anymore as quadromania now
+	     includes a fixed libSDL for this. If tearing still
+             occurs, please inform the authors or try finding
+             another fixed libSDL and copy it to the game folder.
 
 2. Stylus input - this is as accurate as your firmware and calibration.
                   With a proper calibrated display, stylus clicks are
