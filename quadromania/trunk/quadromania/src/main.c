@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 27.06.2010 : 15:04
+ * last Modified: 17.11.2010 : 18:26
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -155,9 +155,20 @@ void MainHandler()
 		menu = MENU_UNDEFINED; /* safe guard menu selection */
 		/* Event reading and parsing.... */
 		Event_ProcessInput();
+		if (Event_GetDpadUp() == TRUE)
+		{
+			fprintf(stderr,"DPAD UP\n");
+			Event_DebounceDpad();
+			while(Event_IsDpadPressed() == TRUE);
+		}
+		if (Event_GetDpadButton() == TRUE)
+		{
+			fprintf(stderr,"DPAD BUTTON\n");
+			Event_DebounceDpad();
+		}
 		if (Event_IsESCPressed() == TRUE)
 		{
-			if (status == GAME)
+			if ((status == GAME) || (status == SHOW_HIGHSCORES))
 			{
 				/* is there a game running? if yes then back to title screen...*/
 				status = TITLE;
