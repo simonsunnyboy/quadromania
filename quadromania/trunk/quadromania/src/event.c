@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.c - implements the input event API
- * last Modified: 04.07.2010 : 18:24
+ * last Modified: 18.11.2010 : 18:45
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,10 @@ const Uint8 Event_Debounce_timeslices = 20;
  * FUNCTIONS *
  *************/
 
-/* initialize event handler */
+/**
+ *  This function initializes the event handling.
+ *  It is called from InitGameEngine()
+ */
 void Event_Init()
 {
 	mouse.x            = 0;
@@ -80,7 +83,10 @@ void Event_Init()
 #endif
 }
 
-/* processes SDL Events and updates the event data structures */
+/**
+ *  This function processes SDL Events and updates the event data structures accordingly.
+ *  SDL joystick input is mapped to an abstract directional pad.
+ */
 void Event_ProcessInput()
 {
 	SDL_Event event; /* SDL event for keyboard, mouse and focus actions... */
@@ -325,43 +331,57 @@ void Event_ProcessInput()
    #endif
 }
 
-/* has a program shutdown been requested? */
+/**
+ *  @return TRUE if a program shutdown has been requested
+ */
 BOOLEAN Event_QuitRequested()
 {
 	return(QUITrequest);
 }
 
-/* has ESC been pressed? */
+/**
+ *  @return TRUE if has ESC been pressed
+ */
 BOOLEAN Event_IsESCPressed()
 {
 	return(ESCpressed);
 }
 
-/* return X position of mouse click */
+/**
+ * @return X position of mouse click
+ */
 Uint16 Event_GetMouseX()
 {
 	return(mouse.x);
 }
 
-/* return Y position of mouse click */
+/**
+ * @return Y position of mouse click
+ */
 Uint16 Event_GetMouseY()
 {
 	return(mouse.y);
 }
 
-/* return which mouse button was pressed */
+/**
+ * @return which mouse button was pressed
+ */
 Uint8 Event_GetMouseButton()
 {
 	return(mouse.button);
 }
 
-/* return if the mouse button has been clicked */
+/**
+ * @return if the mouse button has been clicked
+ */
 BOOLEAN Event_MouseClicked()
 {
 	return(mouse.clicked);
 }
 
-/* callback to allow the event handler to debounce the mouse button */
+/**
+ * This function implements a callback to allow the event handler to debounce the mouse button.
+ */
 void Event_DebounceMouse()
 {
 	mouse.clicked=FALSE;
@@ -369,43 +389,58 @@ void Event_DebounceMouse()
 	debounce_tmr_mouse = Event_Debounce_timeslices;
 }
 
-/* return directional pad direction up */
+/**
+ *  @return TRUE if directional pad direction up pressed?
+ */
 BOOLEAN Event_GetDpadUp()
 {
 	return(dpad.up);
 }
 
-/* return directional pad direction down */
+/**
+ *  @return TRUE if directional pad direction down pressed?
+ */
 BOOLEAN Event_GetDpadDown()
 {
 	return(dpad.down);
 }
 
-/* return directional pad direction left */
+/**
+ *  @return TRUE if directional pad direction left pressed?
+ */
 BOOLEAN Event_GetDpadLeft()
 {
 	return(dpad.left);
 }
 
-/* return directional pad direction right */
+/**
+ *  @return TRUE if directional pad direction right pressed?
+ */
 BOOLEAN Event_GetDpadRight()
 {
 	return(dpad.right);
 }
 
-/* return directional pad direction button */
+/**
+ *  @return TRUE if directional pad firebutton is pressed?
+ */
 BOOLEAN Event_GetDpadButton()
 {
 	return(dpad.button);
 }
 
-/* determines if any directions or firebuttons on the directional pad are pressed */
+/**
+ * This functiondetermines if any directions or firebuttons on the directional pad are pressed
+ * @return TRUE if any direction or firebutton on the pad is pressed
+ */
 BOOLEAN Event_IsDpadPressed()
 {
 	return((dpad.up == TRUE)||(dpad.down == TRUE)||(dpad.left == TRUE)||(dpad.right == TRUE)||(dpad.button == TRUE));
 }
 
-/* callback to allow the event handler to debounce directional pad input */
+/**
+ * This function implements a callback to allow the event handler to debounce any directional pad input.
+ */
 void Event_DebounceDpad()
 {
 	debounce_tmr_dpad = Event_Debounce_timeslices;
@@ -416,7 +451,9 @@ void Event_DebounceDpad()
 	dpad.button = FALSE;
 }
 
-/* callback to allow the event handler to debounce key presses */
+/**
+ * This function implements a callback to allow the event handler to debounce all key presses.
+ */
 void Event_DebounceKeys()
 {
 	debounce_tmr_keys = Event_Debounce_timeslices;
@@ -424,7 +461,9 @@ void Event_DebounceKeys()
 }
 
 #if(HAVE_JOYSTICK != _NO_JOYSTICK)
-/* initializes joysticks */
+/**
+ * This function initializes any SDL joystick devices.
+ */
 void Joystick_Init()
 {
 #ifdef _DEBUG

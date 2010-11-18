@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: datatypes.h - header file for defining platform independent data types
- * last Modified: 09.02.2010 : 17:32
+ * last Modified: 18.11.2010 : 19:05
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 #if(HAVE_SDL_DATATYPES == 1)
 	#include <SDL/SDL.h>
 #else
-	/* we have to typedef the datatypes with SDL naming conventiosn if we don't have them */
+	/* we have to typedef the datatypes with SDL naming conventions if we don't have them */
 	/* FIXME: if stdint.h is available point to those instead */
 
 	typedef unsigned char Uint8;

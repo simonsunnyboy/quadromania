@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: graphics.c - implements the graphics API
- * last Modified: 26.06.2010 : 15:47
+ * last Modified: 18.11.2010 : 19:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,9 @@ static SDL_Surface *textures, *frame, *dots, *font, *titel, *copyright ,*window_
 static Uint16 frame_width, frame_height, dot_width, dot_height, texture_width,
 		texture_height, font_height;
 
-/* texture the complete screen with 1 out of 10 textures... */
+/**
+ * This function textures the complete screen with 1 out of 10 textures.
+ */
 void Graphics_DrawBackground(Uint8 texture)
 {
 	Uint8 i, j;
@@ -65,7 +67,9 @@ void Graphics_DrawBackground(Uint8 texture)
 		}
 }
 
-/* draw one of the coloured dots for the playfield... */
+/**
+ * This function draws one of the coloured dots at the given playfield coordinate.
+ */
 void Graphics_DrawDot(Uint16 x, Uint16 y, Uint8 number)
 {
 	SDL_Rect src, dest;
@@ -81,7 +85,9 @@ void Graphics_DrawDot(Uint16 x, Uint16 y, Uint8 number)
 	SDL_BlitSurface(dots, &src, screen, &dest);
 }
 
-/* draw the titel string */
+/**
+ * This function draws the title logo onscreen.
+ */
 void Graphics_DrawTitle()
 {
 	SDL_Rect src, dest;
@@ -107,7 +113,9 @@ void Graphics_DrawTitle()
 
 }
 
-/* draws the instructions screen */
+/**
+ * This function draws the "instructions" screen.
+ */
 void Graphics_DrawInstructions()
 {
 	const char *continue_msg = "Click here to continue!";
@@ -148,7 +156,9 @@ void Graphics_DrawInstructions()
 	SDL_FreeSurface(instructions_gfx);
 }
 
-/* draw given highscore table  */
+/**
+ * This function draws the given highscore table and its associated entries.
+ */
 void Graphics_ListHighscores(Uint16 nr_of_table)
 {
 	Uint16 i,y;
@@ -191,7 +201,9 @@ void Graphics_ListHighscores(Uint16 nr_of_table)
 	Graphics_UpdateScreen();
 }
 
-/* draw the outer frame... */
+/**
+ * This functions draws the wooden outer frame onscreen.
+ */
 void Graphics_DrawOuterFrame()
 {
 	SDL_Rect src, dest;
@@ -207,13 +219,17 @@ void Graphics_DrawOuterFrame()
 	SDL_BlitSurface(frame, &src, screen, &dest);
 }
 
-/* write some text with the default font on the screen... */
+/**
+ * This utility function writes some text with the default font on the screen at the given coordinates.
+ */
 void Graphics_DrawText(Uint16 x, Uint16 y, char *text)
 {
 	PutString(screen, x, y, text);
 }
 
-/* show the "you have won!" message */
+/**
+ * This function shows the "you have won!" message.
+ */
 void Graphics_DrawWinMessage()
 {
 	const Uint16 factor = (SCREEN_WIDTH / 320);
@@ -238,7 +254,9 @@ void Graphics_DrawWinMessage()
 	return;
 }
 
-/* show the "you have lost" message */
+/**
+ * This function shows the "you have lost" message.
+ */
 void Graphics_DrawGameoverMessage()
 {
 	const Uint16 factor = (SCREEN_WIDTH / 320);
@@ -263,7 +281,11 @@ void Graphics_DrawGameoverMessage()
 	return;
 }
 
-/* to be able to use the graphics module, initialize it first... */
+/**
+ * This function initializes the graphics subsystem.
+ * A fullscreen mode maybe requested.
+ * @return TRUE if initialization was successfull
+ */
 BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 {
 	/* determine video scaling */
@@ -352,7 +374,10 @@ BOOLEAN Graphics_Init(BOOLEAN set_fullscreen)
 	return(TRUE);
 }
 
-/* at exit clean up the graphics module... */
+/**
+ * This callback function frees all memory requested by the Graphics submodule.
+ * It is called with the atexit() mechanism at any fault or a proper program exit.
+ */
 void Graphics_CleanUp()
 {
 	SDL_FreeSurface(textures);
@@ -369,37 +394,51 @@ void Graphics_CleanUp()
 
 }
 
-/* get width of a dot tile */
+/**
+ * @return width of a dot tile in pixels
+ */
 Uint16 Graphics_GetDotWidth()
 {
 	return(dot_width);
 }
 
-/* get heigth of a dot tile */
+/**
+ * @return height of a dot tile in pixels
+ */
 Uint16 Graphics_GetDotHeight()
 {
 	return(dot_height);
 }
 
-/* get width of the screen */
+/**
+ * @return width of the entire screen in pixels
+ */
 Uint16 Graphics_GetScreenWidth()
 {
 	return(screen->w);
 }
 
-/* get heigth of the screen  */
+/**
+ * @return height of the entire screen in pixels
+ */
 Uint16 Graphics_GetScreenHeight()
 {
 	return(screen->h);
 }
 
-/* get heigth of the main font */
+/**
+ * @return height of the font in pixels
+ */
 Uint16 Graphics_GetFontHeight()
 {
 	return(font_height);
 }
 
-/* load a graphics ressource from disk or flash */
+/**
+ * This function loads a graphics resource from a given filename.
+ * Any surfaces loaded with this call must be freed at exit with the Graphics_CleanUp() call.
+ * @return pointer to SDL_Surface if loading was successfull
+ */
 SDL_Surface* Graphics_LoadGraphicsResource(char* inputfilename)
 {
 	char filename[255]; /* temporary filename buffer */
@@ -417,14 +456,18 @@ SDL_Surface* Graphics_LoadGraphicsResource(char* inputfilename)
 	return(IMG_Load(filename));
 }
 
-/* load and set the window icon */
+/**
+ * This function loads the window icon from a file and initializes it for use.
+ */
 void Graphics_SetWindowIcon()
 {
 	window_icon = Graphics_LoadGraphicsResource("*ICON*");
 	SDL_WM_SetIcon(window_icon, NULL);
 }
 
-/* make all changes to the screen visible */
+/**
+ * This function updates any changes to the screen and makes them visible.
+ */
 void Graphics_UpdateScreen()
 {
 	SDL_Flip(screen);

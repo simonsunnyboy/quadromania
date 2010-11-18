@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: event.h - symbolic constants, data types and function prototypes for event handling
- * last Modified: 04.07.2010 : 18:23
+ * last Modified: 18.11.2010 : 19:05
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,13 +63,21 @@
 	/**************************
 	 * DATA TYPE DECLARATIONS *
      **************************/
+
+    /**
+     * This data structure represents the collect input and state of the mouse/stylus input device.
+     */
 	typedef struct
 	{
-		Uint16 x, y;
-		Uint8 button;
-		BOOLEAN clicked;
+		Uint16 x, y; /** mouse coordinates in pixels */
+		Uint8 button; /** mouse button number */
+		BOOLEAN clicked; /** mouse clicked? */
 	} MOUSE;
 
+	/**
+	 * This data structure represents the state of the virtual directional pad.
+	 * Each member describes whether the direction or firebutton is pressed.
+	 */
 	typedef struct
 	{
 		BOOLEAN up;

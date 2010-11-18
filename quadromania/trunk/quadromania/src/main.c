@@ -3,7 +3,7 @@
  * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: main.c - the main module handling input and game control
- * last Modified: 17.11.2010 : 18:26
+ * last Modified: 18.11.2010 : 18:36
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,6 +112,10 @@ int main(int argc, char *argv[])
 	}
 }
 
+/**
+ * The game engine and its subcomponents are initialized from this function.
+ * @returns whether the initialization was successfull
+ */
 BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 {
 	/* initialize random number generator... */
@@ -134,6 +138,10 @@ BOOLEAN InitGameEngine(BOOLEAN fullscreen)
 	}
 }
 
+/**
+ * The main handling function implements the title screen and game management via a statemachine.
+ * Transitions of the state machine are initiated from user input.
+ */
 void MainHandler()
 {
 	enum GAMESTATE status, oldstatus; /* for the event driven automata... */
@@ -157,7 +165,7 @@ void MainHandler()
 		Event_ProcessInput();
 		if (Event_GetDpadUp() == TRUE)
 		{
-			fprintf(stderr,"DPAD UP\n");
+			fprintf(stderr,"n\n");
 			Event_DebounceDpad();
 			while(Event_IsDpadPressed() == TRUE);
 		}

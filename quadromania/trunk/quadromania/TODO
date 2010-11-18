@@ -5,6 +5,5 @@ TODO list for quadromania
 	* add highscore management for all levels and game settings
 	* add more ports (old GP2X, Atari, Mac)
 	* add splash screen
-	* fix: ESC from highscore list should go to main menu and not quit the game
-
+	* random generator: ensure the seed is initialized
 	

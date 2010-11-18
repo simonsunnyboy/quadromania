@@ -1,3 +1,9 @@
+18.11.2010:
+	- started documenting the game's source code with Doxygen
+
+17.11.2010:
+	- fix the highscore table bug when presing ESC
+
 06.07.2010:
 	- ship libSDL with tearing fix for the GP2X Wiz target by default
 
