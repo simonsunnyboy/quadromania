@@ -1,3 +1,6 @@
+21.02.2013:
+	- added CMakeLists.txt to generate Makefiles with CMake (aid crosscompilation)
+
 18.11.2010:
 	- started documenting the game's source code with Doxygen
 
