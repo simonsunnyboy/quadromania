@@ -1,9 +1,9 @@
 /*
  * Quadromania
- * (c) 2002/2003/2009/2010 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
+ * (c) 2002/2003/2009/2010/2015 by Matthias Arndt <marndt@asmsoftware.de> / ASM Software
  *
  * File: version.h - versioning information of the package
- * last Modified: 18.11.2010 : 19:17
+ * last Modified: 08.04.2015 : 18:12
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,6 @@
 	#define __VERSION_H
 
     #define PACKAGE "quadromania"
-    #define VERSION "quadromania November 18th 2010"
+    #define VERSION "quadromania " __DATE__  " "
 
 #endif

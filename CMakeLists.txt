@@ -36,9 +36,9 @@ include_directories (
 # REQUIRED does not work in CMake <=2.4.6 for SDL
 Find_Package ( SDL REQUIRED )
 # if using SDL_image
-Find_Package ( SDL_image REQUIRED ) 
+Find_Package ( SDL_image REQUIRED )
 # if using SDL_mixer
-Find_Package ( SDL_mixer REQUIRED ) 
+Find_Package ( SDL_mixer REQUIRED )
 
 # Workaround for the non-working REQUIRED flag
 if ( NOT SDL_FOUND )
@@ -55,5 +55,6 @@ link_libraries (
 add_executable (
    quadromania
    ${SOURCES} # We could've listed the source files here directly instead of using a variable to store them
-
+   ChangeLog
+   README
 )
