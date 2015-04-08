@@ -1,3 +1,6 @@
+08.04.2015
+	- auto generate correct version information string for window title and debug output
+
 21.02.2013:
 	- added CMakeLists.txt to generate Makefiles with CMake (aid crosscompilation)
 
@@ -26,7 +29,7 @@
 27.06.2010:
 	- moved sources to src/ directory
 	- added initial sound sound support and actual audiofiles
-	
+
 26.06.2010:
 	- made selection of SDL_Surface type even more flexible: USE_DOUBLEBUFFEREDSURFACE
 	- slight rewrote of SDL graphics init routine
@@ -69,7 +72,7 @@
 	- added GP2X Wiz specific README
 	- added TODO list
 	- updated the INSTALL file
-	
+
 26.01.2010:
 	- added infrastructure for future Wiz release as ZIP file which can be directly unzipped to NAND or SD-Card
 
@@ -78,7 +81,7 @@
   - moved loading of graphics resources into a subfunction Graphics_LoadGraphicsResource()
   - FIXED: missing SDL_FreeSurface calls in Graphics_CleanUp()
   - slight update of INSTALL and README documentation
-  - updated copyright year in all source files 
+  - updated copyright year in all source files
 
 24.01.2010:
 	- added support for GP2X (clean up of Graphics module, disable mouse pointer if configured)
@@ -109,7 +112,7 @@
 	- refactored function and procedures names according to <<Module>>_Function convention
 	- refactored main() into distinct parts and subroutines
 	- LINT
-	
+
 10.11.2009:
 	- project resurrected for future port to GP2X Wiz
 	- cleanup source formatting
@@ -120,7 +123,7 @@
 26.01.2003:
 	- game at least playable (no counters, no timer)
 	- simple screen for winning the game
-	
+
 20.12.2002:
 	- first code for the game logic
 	- changed to platform independant SDL data types for int and long
@@ -128,11 +131,11 @@
 	- added a graphic with copyright message
 
 19.12.2002:
-	- source compiled on MinGW 2.0 without modifications - Windows port possible! 
+	- source compiled on MinGW 2.0 without modifications - Windows port possible!
 
 17.12.2002:
 	- project started
 	- graphics module added
 	- made a simple graphics set (any volunteers to make a better one? :) )
 	- skeleton of main module
-	
+
